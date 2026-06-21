@@ -14,7 +14,7 @@
       "currentLocalHash": "87368c8036f68d82a646aaef73b19b23e0e7f4892159e02ced61dd9cd160edeb",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.950Z",
-      "updatedAt": "2026-06-21T14:30:56.950Z"
+      "updatedAt": "2026-06-21T14:45:50.854Z"
     },
     {
       "id": "architecture-decision",
@@ -29,7 +29,7 @@
       "currentLocalHash": "182329e9a95c5a6fe29074653c9f0c09f6a2b5e598f094352447498c65a6cd93",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.954Z",
-      "updatedAt": "2026-06-21T14:30:56.954Z"
+      "updatedAt": "2026-06-21T14:45:50.863Z"
     },
     {
       "id": "architecture-review",
@@ -44,7 +44,7 @@
       "currentLocalHash": "ac290720ebc44ec387a93b73834e313da87724af0037274eb436a23285c14ad6",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.958Z",
-      "updatedAt": "2026-06-21T14:30:56.958Z"
+      "updatedAt": "2026-06-21T14:45:50.874Z"
     },
     {
       "id": "art-bible",
@@ -59,7 +59,7 @@
       "currentLocalHash": "e1d6666bf3c16a8d2701aa8ee2dc4335bed08b179d05faa0e370850b4e34ce74",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.962Z",
-      "updatedAt": "2026-06-21T14:30:56.962Z"
+      "updatedAt": "2026-06-21T14:45:50.883Z"
     },
     {
       "id": "asset-audit",
@@ -74,7 +74,7 @@
       "currentLocalHash": "7ea996eccb1b101fcfe829b9f29d9854411d9798685b4f9fbb89956f659d68b1",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.966Z",
-      "updatedAt": "2026-06-21T14:30:56.966Z"
+      "updatedAt": "2026-06-21T14:45:50.890Z"
     },
     {
       "id": "asset-spec",
@@ -89,7 +89,7 @@
       "currentLocalHash": "9633f79472ecbef444499c0e7c566ec17cc9727b8147b9c746b4379ecee0e83e",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.969Z",
-      "updatedAt": "2026-06-21T14:30:56.969Z"
+      "updatedAt": "2026-06-21T14:45:50.896Z"
     },
     {
       "id": "balance-check",
@@ -104,7 +104,7 @@
       "currentLocalHash": "145d5c1ead5dd9dfc08778db067ef32528b8348413eb63d89dda6e47342815ff",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.973Z",
-      "updatedAt": "2026-06-21T14:30:56.973Z"
+      "updatedAt": "2026-06-21T14:45:50.904Z"
     },
     {
       "id": "bi-connect",
@@ -119,7 +119,7 @@
       "currentLocalHash": "bc4cb60d117042665cf51906fb9fc7ad578d6c299a8ee5d215659119307cb858",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.979Z",
-      "updatedAt": "2026-06-21T14:30:56.979Z"
+      "updatedAt": "2026-06-21T14:45:50.915Z"
     },
     {
       "id": "bi-dax",
@@ -134,7 +134,7 @@
       "currentLocalHash": "ccbb5fc3f13ca3584a0667d17b33ce4c1ecf4f9a97703500743526d266cd3f3b",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.984Z",
-      "updatedAt": "2026-06-21T14:30:56.984Z"
+      "updatedAt": "2026-06-21T14:45:50.923Z"
     },
     {
       "id": "bi-kickoff",
@@ -149,7 +149,7 @@
       "currentLocalHash": "c31f859bf15834a396dee70712548665a340ab6b10bd833e884e084f4d67d747",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.993Z",
-      "updatedAt": "2026-06-21T14:30:56.993Z"
+      "updatedAt": "2026-06-21T14:45:50.938Z"
     },
     {
       "id": "bi-modeling",
@@ -164,7 +164,7 @@
       "currentLocalHash": "cd2a5b7bbddcfc0d30c7197cb7f8bdaab7063b1953bb2ececf9c0cd45f6583fe",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:56.999Z",
-      "updatedAt": "2026-06-21T14:30:56.999Z"
+      "updatedAt": "2026-06-21T14:45:50.946Z"
     },
     {
       "id": "bi-performance",
@@ -179,7 +179,7 @@
       "currentLocalHash": "22ec1afe31ce3b7c6bc0003f0b0a2c485b0141bfc89461d62af81e9b722ac731",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.010Z",
-      "updatedAt": "2026-06-21T14:30:57.010Z"
+      "updatedAt": "2026-06-21T14:45:50.963Z"
     },
     {
       "id": "bi-powerquery",
@@ -194,7 +194,7 @@
       "currentLocalHash": "b00fb6853dd15a9a1b6da15e7337c8caa656e7eb7c88aa5fa665334d06b3959b",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.025Z",
-      "updatedAt": "2026-06-21T14:30:57.025Z"
+      "updatedAt": "2026-06-21T14:45:50.982Z"
     },
     {
       "id": "bi-refactor",
@@ -209,7 +209,7 @@
       "currentLocalHash": "64f94b018518b532cf3dac49d4370467b13b47d336ddf7dc540d64ea477c0030",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.033Z",
-      "updatedAt": "2026-06-21T14:30:57.033Z"
+      "updatedAt": "2026-06-21T14:45:50.995Z"
     },
     {
       "id": "bi-scorecard",
@@ -224,7 +224,7 @@
       "currentLocalHash": "6c28e02360470b388e567914b62dbfd0f36466d0597f7b2f98c5f9f78ab44d52",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.049Z",
-      "updatedAt": "2026-06-21T14:30:57.049Z"
+      "updatedAt": "2026-06-21T14:45:51.019Z"
     },
     {
       "id": "bi-start",
@@ -239,7 +239,7 @@
       "currentLocalHash": "56e30c978e2121335597e99e9b28b0a9b900c4d4a701d606eedc329362244f79",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.056Z",
-      "updatedAt": "2026-06-21T14:30:57.056Z"
+      "updatedAt": "2026-06-21T14:45:51.034Z"
     },
     {
       "id": "brainstorm",
@@ -254,7 +254,7 @@
       "currentLocalHash": "c3fbb53163f6a7a94289419f63ffa53a8e50eea4787244353046200a4acb0e97",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.060Z",
-      "updatedAt": "2026-06-21T14:30:57.060Z"
+      "updatedAt": "2026-06-21T14:45:51.043Z"
     },
     {
       "id": "bug-report",
@@ -269,7 +269,7 @@
       "currentLocalHash": "9576d3d02c3e9e21e727df8647897ce3d66e3f4cdeb73792025d0d5fdfa448fd",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.063Z",
-      "updatedAt": "2026-06-21T14:30:57.063Z"
+      "updatedAt": "2026-06-21T14:45:51.054Z"
     },
     {
       "id": "bug-triage",
@@ -284,7 +284,7 @@
       "currentLocalHash": "f92976310e7fba1dc7a0f2db7124c9fb7963950de0be7aa01df471ba86a1fa10",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.067Z",
-      "updatedAt": "2026-06-21T14:30:57.067Z"
+      "updatedAt": "2026-06-21T14:45:51.063Z"
     },
     {
       "id": "changelog",
@@ -299,7 +299,7 @@
       "currentLocalHash": "398c6829a2834c217b448f283783719609d9ee085e69ed6346ddb0f6d9deab59",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.072Z",
-      "updatedAt": "2026-06-21T14:30:57.072Z"
+      "updatedAt": "2026-06-21T14:45:51.073Z"
     },
     {
       "id": "code-review",
@@ -314,7 +314,7 @@
       "currentLocalHash": "b0235cc50476a5c1b74444786f5f5d50aaef286eba2409ecadea5f37e01446b2",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.077Z",
-      "updatedAt": "2026-06-21T14:30:57.077Z"
+      "updatedAt": "2026-06-21T14:45:51.081Z"
     },
     {
       "id": "consistency-check",
@@ -329,7 +329,7 @@
       "currentLocalHash": "ac1df9a0654243cfa03f4fa5a2602c168fb174d0b62ac1a1234041b5047ff968",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.080Z",
-      "updatedAt": "2026-06-21T14:30:57.080Z"
+      "updatedAt": "2026-06-21T14:45:51.088Z"
     },
     {
       "id": "content-audit",
@@ -344,7 +344,7 @@
       "currentLocalHash": "f63a1874295957307f79014a4fd204dfd50cee35327d11d7a03d7018988ab04a",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.085Z",
-      "updatedAt": "2026-06-21T14:30:57.085Z"
+      "updatedAt": "2026-06-21T14:45:51.097Z"
     },
     {
       "id": "create-architecture",
@@ -359,7 +359,7 @@
       "currentLocalHash": "8c40e12ea5a79c5ec6b77257e8acd264b31d9e5ee76ab56322a9ac61015ce46c",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.090Z",
-      "updatedAt": "2026-06-21T14:30:57.090Z"
+      "updatedAt": "2026-06-21T14:45:51.106Z"
     },
     {
       "id": "create-control-manifest",
@@ -374,7 +374,7 @@
       "currentLocalHash": "ab4b65a6e1d09cd4357c1647843750b9d3b828442e5f722527217fdb1d967b45",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.094Z",
-      "updatedAt": "2026-06-21T14:30:57.094Z"
+      "updatedAt": "2026-06-21T14:45:51.112Z"
     },
     {
       "id": "create-epics",
@@ -389,7 +389,7 @@
       "currentLocalHash": "ba1acb650f744d92ffdc2d67b0aff4654ce7722cf3a016d74e39e52ee1003e7f",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.097Z",
-      "updatedAt": "2026-06-21T14:30:57.097Z"
+      "updatedAt": "2026-06-21T14:45:51.119Z"
     },
     {
       "id": "create-stories",
@@ -404,7 +404,7 @@
       "currentLocalHash": "0aa8188b2a445b5fca8fc57ff4264448c64974d32de6df2870c102a7605dbdab",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.101Z",
-      "updatedAt": "2026-06-21T14:30:57.101Z"
+      "updatedAt": "2026-06-21T14:45:51.129Z"
     },
     {
       "id": "day-one-patch",
@@ -419,7 +419,7 @@
       "currentLocalHash": "62ee6b24f955dfa2e5365b13f2b3f18bab3451030a0063aad24f7920a0c8437e",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.107Z",
-      "updatedAt": "2026-06-21T14:30:57.107Z"
+      "updatedAt": "2026-06-21T14:45:51.135Z"
     },
     {
       "id": "design-review",
@@ -434,7 +434,7 @@
       "currentLocalHash": "7cc4539355531c7d4f6d7d643f30ceb4e55476ca09cef2f2b4e2d82d4ae7e96a",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.111Z",
-      "updatedAt": "2026-06-21T14:30:57.111Z"
+      "updatedAt": "2026-06-21T14:45:51.141Z"
     },
     {
       "id": "design-system",
@@ -449,7 +449,7 @@
       "currentLocalHash": "4bfe209e914b9dce534d3f719971298477c4640351a651304e666124cec84867",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.115Z",
-      "updatedAt": "2026-06-21T14:30:57.115Z"
+      "updatedAt": "2026-06-21T14:45:51.146Z"
     },
     {
       "id": "dev-story",
@@ -464,7 +464,7 @@
       "currentLocalHash": "7760f79930aa9141f27dc6f8c218ee9fa4d1086e97ca1cc815593dabcd9f8d5f",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.121Z",
-      "updatedAt": "2026-06-21T14:30:57.121Z"
+      "updatedAt": "2026-06-21T14:45:51.151Z"
     },
     {
       "id": "estimate",
@@ -479,7 +479,7 @@
       "currentLocalHash": "08f61209d04634b494db29ac6abe9129d2b9a3f78ad0a9ef49fe21b5f09e2d33",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.126Z",
-      "updatedAt": "2026-06-21T14:30:57.126Z"
+      "updatedAt": "2026-06-21T14:45:51.156Z"
     },
     {
       "id": "find-skills",
@@ -509,7 +509,7 @@
       "currentLocalHash": "75d50f2ec280db401cfd41524e7796cb3a2ac9da3e0adb28c1da886c02341a0b",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.135Z",
-      "updatedAt": "2026-06-21T14:30:57.135Z"
+      "updatedAt": "2026-06-21T14:45:51.161Z"
     },
     {
       "id": "help",
@@ -524,7 +524,7 @@
       "currentLocalHash": "03861a2a24918c5427d0a107754ab9d383432ccd7ed54a448fd4c6db80151de1",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.140Z",
-      "updatedAt": "2026-06-21T14:30:57.140Z"
+      "updatedAt": "2026-06-21T14:45:51.178Z"
     },
     {
       "id": "hotfix",
@@ -539,7 +539,7 @@
       "currentLocalHash": "a89f653bd78a2edaecc1357d0a424cbe018a3e99b881b618f0c381f43be76c39",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.144Z",
-      "updatedAt": "2026-06-21T14:30:57.144Z"
+      "updatedAt": "2026-06-21T14:45:51.184Z"
     },
     {
       "id": "launch-checklist",
@@ -554,7 +554,7 @@
       "currentLocalHash": "40a492a5b9e690960a6f4dbf60ca883c0c921bc4350c8827245d537399047518",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.149Z",
-      "updatedAt": "2026-06-21T14:30:57.149Z"
+      "updatedAt": "2026-06-21T14:45:51.189Z"
     },
     {
       "id": "localize",
@@ -569,7 +569,7 @@
       "currentLocalHash": "a1fe167ce49fb2951182271794e3fea3fffd2b54b77f8972fcf486e08d4e34af",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.153Z",
-      "updatedAt": "2026-06-21T14:30:57.153Z"
+      "updatedAt": "2026-06-21T14:45:51.194Z"
     },
     {
       "id": "map-systems",
@@ -584,7 +584,7 @@
       "currentLocalHash": "33b8c1dd28c7d6123978b4598369b206610d405106b459ddf68cb249e22e3187",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.158Z",
-      "updatedAt": "2026-06-21T14:30:57.158Z"
+      "updatedAt": "2026-06-21T14:45:51.199Z"
     },
     {
       "id": "milestone-review",
@@ -599,7 +599,7 @@
       "currentLocalHash": "037a09628002f144ae4196b9e5f303e039cdabcacd058009d2087e981d0fee5b",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.162Z",
-      "updatedAt": "2026-06-21T14:30:57.162Z"
+      "updatedAt": "2026-06-21T14:45:51.204Z"
     },
     {
       "id": "onboard",
@@ -614,7 +614,7 @@
       "currentLocalHash": "333a068c7b8bb469444005672c0a11d106e08f5606a0619ab5fd2340f6cc8a04",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.167Z",
-      "updatedAt": "2026-06-21T14:30:57.167Z"
+      "updatedAt": "2026-06-21T14:45:51.210Z"
     },
     {
       "id": "patch-notes",
@@ -629,7 +629,7 @@
       "currentLocalHash": "0722a4307144a21b519bca09cea99e83daa0c4af2e1ce93dda09eeb5f351570f",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.171Z",
-      "updatedAt": "2026-06-21T14:30:57.171Z"
+      "updatedAt": "2026-06-21T14:45:51.215Z"
     },
     {
       "id": "perf-profile",
@@ -644,7 +644,7 @@
       "currentLocalHash": "169729de726663b0e741146e23c1f31c76158a137917298650421e893c821e30",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.176Z",
-      "updatedAt": "2026-06-21T14:30:57.176Z"
+      "updatedAt": "2026-06-21T14:45:51.220Z"
     },
     {
       "id": "playtest-report",
@@ -659,7 +659,7 @@
       "currentLocalHash": "a01cf995834502b1b2262f75649266342a677bc1421b8742fa584a8cc4761734",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.179Z",
-      "updatedAt": "2026-06-21T14:30:57.179Z"
+      "updatedAt": "2026-06-21T14:45:51.225Z"
     },
     {
       "id": "project-stage-detect",
@@ -674,7 +674,7 @@
       "currentLocalHash": "f5cf53a6d2da17339136f95611d647921a47b73fa643c699484f932e9595bee7",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.183Z",
-      "updatedAt": "2026-06-21T14:30:57.183Z"
+      "updatedAt": "2026-06-21T14:45:51.232Z"
     },
     {
       "id": "propagate-design-change",
@@ -689,7 +689,7 @@
       "currentLocalHash": "a95d18e4f9f0f5b222ba16b93d94815dd63ae3bf862daa401810b6659c9507e9",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.187Z",
-      "updatedAt": "2026-06-21T14:30:57.187Z"
+      "updatedAt": "2026-06-21T14:45:51.236Z"
     },
     {
       "id": "prototype",
@@ -704,7 +704,7 @@
       "currentLocalHash": "22dafe23c22f003daf19559ef309a7c10910c84dd2630cb3df090903ea197454",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.192Z",
-      "updatedAt": "2026-06-21T14:30:57.192Z"
+      "updatedAt": "2026-06-21T14:45:51.241Z"
     },
     {
       "id": "qa-plan",
@@ -719,7 +719,7 @@
       "currentLocalHash": "fc6786bd2b00b9f2c82c3231bb964eadf68f4782caf2636ccd4346ee70f2b8d3",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.196Z",
-      "updatedAt": "2026-06-21T14:30:57.196Z"
+      "updatedAt": "2026-06-21T14:45:51.247Z"
     },
     {
       "id": "quick-design",
@@ -734,7 +734,7 @@
       "currentLocalHash": "e18c181f1174a6c111c520b37aaeb26a2dadcc5cf810ccf0314e96e4572d5133",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.200Z",
-      "updatedAt": "2026-06-21T14:30:57.200Z"
+      "updatedAt": "2026-06-21T14:45:51.253Z"
     },
     {
       "id": "regression-suite",
@@ -749,7 +749,7 @@
       "currentLocalHash": "162f2d72d8e698b3388bad8754b0f510ee64d169ce1c12807c711acbbb93d755",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.204Z",
-      "updatedAt": "2026-06-21T14:30:57.204Z"
+      "updatedAt": "2026-06-21T14:45:51.258Z"
     },
     {
       "id": "release-checklist",
@@ -764,7 +764,7 @@
       "currentLocalHash": "8000f9d1c091065e8cb9c2cc3aeefa34fcad60e53223c1641f6701b67d3a3e54",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.209Z",
-      "updatedAt": "2026-06-21T14:30:57.209Z"
+      "updatedAt": "2026-06-21T14:45:51.263Z"
     },
     {
       "id": "retrospective",
@@ -779,7 +779,7 @@
       "currentLocalHash": "3b458dc9f8ef536e44f728947aa7eca594aad30b1b73e59fa96a38a755e67a51",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.213Z",
-      "updatedAt": "2026-06-21T14:30:57.213Z"
+      "updatedAt": "2026-06-21T14:45:51.269Z"
     },
     {
       "id": "reverse-document",
@@ -794,7 +794,7 @@
       "currentLocalHash": "5090355cf22ea97e81c6f07497b40794c2165bfc987be57ab36f19617344a10e",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.218Z",
-      "updatedAt": "2026-06-21T14:30:57.218Z"
+      "updatedAt": "2026-06-21T14:45:51.274Z"
     },
     {
       "id": "review-all-gdds",
@@ -809,7 +809,7 @@
       "currentLocalHash": "f9df843f484abea320c81b950d09d04b01ef4ce3884a19f928893f40869b5d53",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.223Z",
-      "updatedAt": "2026-06-21T14:30:57.223Z"
+      "updatedAt": "2026-06-21T14:45:51.279Z"
     },
     {
       "id": "scope-check",
@@ -824,7 +824,7 @@
       "currentLocalHash": "ec19ca7b13a9582d67241b2028ef9a2baeac4e254c834b0fb088d3a071be95b6",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.227Z",
-      "updatedAt": "2026-06-21T14:30:57.227Z"
+      "updatedAt": "2026-06-21T14:45:51.284Z"
     },
     {
       "id": "security-audit",
@@ -839,7 +839,7 @@
       "currentLocalHash": "e3a0040489ed6ad9ca0b60fd2a2208062e49409bafb6538e674c18857c9150e6",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.232Z",
-      "updatedAt": "2026-06-21T14:30:57.232Z"
+      "updatedAt": "2026-06-21T14:45:51.291Z"
     },
     {
       "id": "setup-engine",
@@ -854,7 +854,7 @@
       "currentLocalHash": "e70482bd297a39ab575388a4dadbebe1299db742907e22fc822f1114bb065cbf",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.236Z",
-      "updatedAt": "2026-06-21T14:30:57.236Z"
+      "updatedAt": "2026-06-21T14:45:51.298Z"
     },
     {
       "id": "skill-improve",
@@ -869,7 +869,7 @@
       "currentLocalHash": "dd5459739ae7ccc42d9c0927974152d8b92110a6052bf5e93d49c68c4b719d56",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.240Z",
-      "updatedAt": "2026-06-21T14:30:57.240Z"
+      "updatedAt": "2026-06-21T14:45:51.303Z"
     },
     {
       "id": "skill-test",
@@ -884,7 +884,7 @@
       "currentLocalHash": "ed3c388a48bff68644b2315dc46f2ceb73aa702c9774ce6bb2f389a532ff6ca9",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.244Z",
-      "updatedAt": "2026-06-21T14:30:57.244Z"
+      "updatedAt": "2026-06-21T14:45:51.307Z"
     },
     {
       "id": "smoke-check",
@@ -899,7 +899,7 @@
       "currentLocalHash": "36cf39b0aeb828564703770ada0b0eecc7c0ba25e9ba4ec6662a7f02acf6a5fa",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.249Z",
-      "updatedAt": "2026-06-21T14:30:57.249Z"
+      "updatedAt": "2026-06-21T14:45:51.312Z"
     },
     {
       "id": "soak-test",
@@ -914,7 +914,7 @@
       "currentLocalHash": "36c8dedb6cd0c3d3746a9784ba1ebdc2a3f9c8da88d120ac0c4f11c19a68df69",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.254Z",
-      "updatedAt": "2026-06-21T14:30:57.254Z"
+      "updatedAt": "2026-06-21T14:45:51.318Z"
     },
     {
       "id": "sprint-plan",
@@ -929,7 +929,7 @@
       "currentLocalHash": "20d74afdc0db7cd5845c1c805384e66d745b95d3a41ea8ce6bf6c20a0f0bf686",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.258Z",
-      "updatedAt": "2026-06-21T14:30:57.258Z"
+      "updatedAt": "2026-06-21T14:45:51.324Z"
     },
     {
       "id": "sprint-status",
@@ -944,7 +944,7 @@
       "currentLocalHash": "71ca09a603acbafa25060755f7a66c1df0f65288e4595a84f1ac6165448f2cbf",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.262Z",
-      "updatedAt": "2026-06-21T14:30:57.262Z"
+      "updatedAt": "2026-06-21T14:45:51.329Z"
     },
     {
       "id": "start",
@@ -959,7 +959,7 @@
       "currentLocalHash": "0a45ef390e545666aa04d8fbfde6e38b86e7f738b1711bd18065eb71bf61e822",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.266Z",
-      "updatedAt": "2026-06-21T14:30:57.266Z"
+      "updatedAt": "2026-06-21T14:45:51.334Z"
     },
     {
       "id": "story-done",
@@ -974,7 +974,7 @@
       "currentLocalHash": "8898ac9622bd9583ef27b65f4ff96829c336dd9f108eb8ae93db83e438248346",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.270Z",
-      "updatedAt": "2026-06-21T14:30:57.270Z"
+      "updatedAt": "2026-06-21T14:45:51.341Z"
     },
     {
       "id": "story-readiness",
@@ -989,7 +989,7 @@
       "currentLocalHash": "4409498faae97f57670e0b7bb3bd266d15c1b699bcdeff983017bc541366992d",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.274Z",
-      "updatedAt": "2026-06-21T14:30:57.274Z"
+      "updatedAt": "2026-06-21T14:45:51.351Z"
     },
     {
       "id": "team-audio",
@@ -1004,7 +1004,7 @@
       "currentLocalHash": "a4a4482e649390ef827afbbc3f8d655259bd5569b546da2ee804818044ed52eb",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.279Z",
-      "updatedAt": "2026-06-21T14:30:57.279Z"
+      "updatedAt": "2026-06-21T14:45:51.357Z"
     },
     {
       "id": "team-combat",
@@ -1019,7 +1019,7 @@
       "currentLocalHash": "a35dd6224c0a9441b5eb754f1d22bcb0b79703650e1941b8e58ebd6099312c09",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.283Z",
-      "updatedAt": "2026-06-21T14:30:57.283Z"
+      "updatedAt": "2026-06-21T14:45:51.362Z"
     },
     {
       "id": "team-level",
@@ -1034,7 +1034,7 @@
       "currentLocalHash": "989009ebfb7cae5dca5b815c650b46bf5d881b9f84db3fa9a42ee59474880531",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.288Z",
-      "updatedAt": "2026-06-21T14:30:57.288Z"
+      "updatedAt": "2026-06-21T14:45:51.367Z"
     },
     {
       "id": "team-live-ops",
@@ -1049,7 +1049,7 @@
       "currentLocalHash": "8a33e73a6bb09a0a428d312cbabcf6ff6f6e7b4d414af075c4af2f910b856d88",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.292Z",
-      "updatedAt": "2026-06-21T14:30:57.292Z"
+      "updatedAt": "2026-06-21T14:45:51.373Z"
     },
     {
       "id": "team-narrative",
@@ -1064,7 +1064,7 @@
       "currentLocalHash": "af2b7a502b6d5db659034af2e9ca1172a32455027dd75733eb2cab1770bf0fd6",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.296Z",
-      "updatedAt": "2026-06-21T14:30:57.296Z"
+      "updatedAt": "2026-06-21T14:45:51.380Z"
     },
     {
       "id": "team-polish",
@@ -1079,7 +1079,7 @@
       "currentLocalHash": "da83cf46fd3baab62d59f985425e277e13c88931f13a982b7c616f6534183734",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.301Z",
-      "updatedAt": "2026-06-21T14:30:57.301Z"
+      "updatedAt": "2026-06-21T14:45:51.385Z"
     },
     {
       "id": "team-qa",
@@ -1094,7 +1094,7 @@
       "currentLocalHash": "2f876e8c64374dbe885db3cdc71aef45cd24aa575ed73b228c88f7a27a69b0a1",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.305Z",
-      "updatedAt": "2026-06-21T14:30:57.305Z"
+      "updatedAt": "2026-06-21T14:45:51.390Z"
     },
     {
       "id": "team-release",
@@ -1109,7 +1109,7 @@
       "currentLocalHash": "c6bf696ea85a29fd73e589dc246d32a3f3fd7fd8e583eb9eb089ca228fe0be24",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.308Z",
-      "updatedAt": "2026-06-21T14:30:57.308Z"
+      "updatedAt": "2026-06-21T14:45:51.395Z"
     },
     {
       "id": "team-ui",
@@ -1124,7 +1124,7 @@
       "currentLocalHash": "fdf419507240ce790cc7abfae600cfc0462d50c609b886b7e4aaa8a235c52757",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.313Z",
-      "updatedAt": "2026-06-21T14:30:57.313Z"
+      "updatedAt": "2026-06-21T14:45:51.400Z"
     },
     {
       "id": "tech-debt",
@@ -1139,7 +1139,7 @@
       "currentLocalHash": "9a2b90eee0b0bef6f9afc71dd13eec4d817a3e03e8da7415be433901b43aa8b3",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.317Z",
-      "updatedAt": "2026-06-21T14:30:57.317Z"
+      "updatedAt": "2026-06-21T14:45:51.407Z"
     },
     {
       "id": "test-evidence-review",
@@ -1154,7 +1154,7 @@
       "currentLocalHash": "8bb3f05d28b7b0e26fa1ba1093c103bef08866a820dec525681da9056c4ce3d2",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.323Z",
-      "updatedAt": "2026-06-21T14:30:57.323Z"
+      "updatedAt": "2026-06-21T14:45:51.413Z"
     },
     {
       "id": "test-flakiness",
@@ -1169,7 +1169,7 @@
       "currentLocalHash": "cb335a159a6ba2fb72599488a6b14cbaabb0d056c280cf39a60a6f3ef3ee8846",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.327Z",
-      "updatedAt": "2026-06-21T14:30:57.327Z"
+      "updatedAt": "2026-06-21T14:45:51.420Z"
     },
     {
       "id": "test-helpers",
@@ -1184,7 +1184,7 @@
       "currentLocalHash": "92a4b9fdb4a0909a34a8797b3de93fb1a2a3f9b78828c089909aafbc8c3c98c3",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.331Z",
-      "updatedAt": "2026-06-21T14:30:57.331Z"
+      "updatedAt": "2026-06-21T14:45:51.425Z"
     },
     {
       "id": "test-setup",
@@ -1199,7 +1199,7 @@
       "currentLocalHash": "fc0c832d6282e8a9302616d09555d1edbb67b5824adb33b92afba12adcef41b1",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.336Z",
-      "updatedAt": "2026-06-21T14:30:57.336Z"
+      "updatedAt": "2026-06-21T14:45:51.431Z"
     },
     {
       "id": "ui-ux-pro-max",
@@ -1229,7 +1229,7 @@
       "currentLocalHash": "bc1cd6f587453ac5f37bce8cf5135c1e624074934456635e6e1c79e3bf1ee8e1",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.404Z",
-      "updatedAt": "2026-06-21T14:30:57.404Z"
+      "updatedAt": "2026-06-21T14:45:51.437Z"
     },
     {
       "id": "ux-review",
@@ -1244,7 +1244,7 @@
       "currentLocalHash": "0cfef521acf979559af4528274fe1637c8bf731e193915fa2f66a5902bfc20ca",
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.408Z",
-      "updatedAt": "2026-06-21T14:30:57.408Z"
+      "updatedAt": "2026-06-21T14:45:51.442Z"
     }
   ]
 }
