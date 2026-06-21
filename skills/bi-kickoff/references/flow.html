@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>/bi-kickoff production flow</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 0; background: #f6f7f9; color: #1f2937; }
+    main { max-width: 1180px; margin: 0 auto; padding: 32px 24px 48px; }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    p { margin: 0 0 24px; color: #4b5563; }
+    .panel { background: white; border: 1px solid #d8dee8; border-radius: 8px; padding: 24px; overflow-x: auto; }
+    .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 20px; }
+    .rule { background: #fff; border: 1px solid #d8dee8; border-left: 4px solid #111827; border-radius: 6px; padding: 12px 14px; font-size: 14px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>/bi-kickoff production flow</h1>
+  <p>Flujo de producción: proyecto nuevo, Codex-first, Git obligatorio, modelo demo por MCP, eliminación del ejemplo de ventas y validación persistida antes de declarar éxito.</p>
+  <div class="panel">
+    <pre class="mermaid">
+flowchart TD
+    A["Usuario invoca /bi-kickoff"] --> B{"Proyecto nuevo?"}
+    B -->|"No / PBIP existente"| Ref["Derivar a /bi-refactor"]
+    B -->|"Si / carpeta vacia"| C["Primer mensaje simple<br/>pregunta nombre"]
+    C --> D["Scaffold desde base-template<br/>sin narrar checks"]
+    D --> E{"Existe Git?"}
+    E -->|"No"| F["git init"]
+    E -->|"Si"| G["Commit scaffold inicial"]
+    F --> G
+    G --> H["Agente abre PBIP en Desktop"]
+    H --> I["Aclarar: aún es plantilla<br/>siguiente mensaje genera modelo"]
+    I --> J["Conectar MCP"]
+    J --> K["Pedir Inicio > Actualizar<br/>y esperar confirmación"]
+    K --> N["Onboarding negocio<br/>una pregunta por vez"]
+    N --> O["Métricas, dimensiones y tiempo<br/>con opciones numeradas"]
+    O --> P{"Mapeo de datos ahora?"}
+    P -->|"No"| Q["Pendiente para /bi-powerquery"]
+    P -->|"Si"| R["docs/mapeo-de-datos.md<br/>sin conectar fuentes reales"]
+    Q --> S["AGENTS.md + ROADMAP.md + LEARNINGS.md<br/>Codex-only"]
+    R --> S
+    S --> T["Proponer modelo demo<br/>cada fila representa algo medible"]
+    T --> U{"Agregamos o quitamos algo?"}
+    U -->|"Cambios"| T
+    U -->|"Aprobado"| Gen["Crear modelo por MCP"]
+    Gen --> Model["Crear facts, dims, relaciones, métricas, dispatchers"]
+    Model --> Clean["Eliminar star schema demo de Ventas<br/>si el dominio no es ventas"]
+    Clean --> V{"Verificación MCP pasa?"}
+    V -->|"No"| Gen
+    V -->|"Si"| W["Usuario guarda y cierra Desktop"]
+    W --> X{"TMDL persistido valida?"}
+    X -->|"No"| W
+    X -->|"Si"| Y{"Visual bindings validados?"}
+    Y -->|"Rebind tool"| RB["Rebind seguro<br/>backup + dry-run + validación"]
+    Y -->|"Manual"| MH["Handoff manual explícito<br/>reporte pendiente"]
+    RB --> Cmt["Actualizar ROADMAP/docs<br/>commit modelo generado"]
+    MH --> Cmt
+    Cmt --> Z["Handoff: report rebind, authoring o /bi-powerquery"]
+    </pre>
+  </div>
+  <section class="rules">
+    <div class="rule">Codex-only por defecto: sin CLAUDE.md, GEMINI.md, .github ni .kilo.</div>
+    <div class="rule">Git obligatorio: commit del scaffold antes de tocar el modelo.</div>
+    <div class="rule">El agente abre el PBIP y pide el primer refresh en Desktop; MCP lee y valida después, no procesa datos en un modelo abierto.</div>
+    <div class="rule">El usuario ve "cada fila representa..." en lugar de jerga como grano.</div>
+    <div class="rule">Se preservan nombres técnicos bindeados al reporte; si no alcanza, hay gate de rebind visual.</div>
+    <div class="rule">REPORT TOPOLOGY LOCK: no borrar, renombrar, mover o recrear páginas, visuales, layouts mobile o bookmarks. Solo rebind de dimensiones/medidas dentro de visuales existentes: Desktop manual o futura herramienta segura.</div>
+    <div class="rule">El ejemplo de ventas se elimina en proyectos que no son de ventas.</div>
+    <div class="rule">Nada queda completo hasta guardar, cerrar Desktop, validar TMDL y resolver el estado visual.</div>
+  </section>
+</main>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#ffffff', primaryBorderColor: '#111827', primaryTextColor: '#111827', lineColor: '#64748b', tertiaryColor: '#f3f4f6' } });
+</script>
+</body>
+</html>

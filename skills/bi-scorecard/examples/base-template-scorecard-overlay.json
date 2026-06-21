@@ -1,0 +1,82 @@
+{
+  "scorecardName": "Dirección Andina Nexus",
+  "goals": [
+    {
+      "metricName": "Ventas",
+      "scorecardEnabled": true,
+      "goalName": "Ventas",
+      "owner": "direccion@example.com",
+      "cadence": "Monthly",
+      "startDate": "2026-01-01T00:00:00Z",
+      "dueDate": "2026-12-31T00:00:00Z",
+      "target": 12000000,
+      "statusRulePreset": "higher-is-better"
+    },
+    {
+      "metricName": "Margen %",
+      "scorecardEnabled": true,
+      "goalName": "Margen %",
+      "owner": "finance@example.com",
+      "cadence": "Quarterly",
+      "startDate": "2026-01-01T00:00:00Z",
+      "dueDate": "2026-12-31T00:00:00Z",
+      "target": 0.42,
+      "statusRulePreset": "higher-is-better"
+    },
+    {
+      "metricName": "EBITDA",
+      "scorecardEnabled": true,
+      "goalName": "EBITDA",
+      "owner": "finance@example.com",
+      "cadence": "Monthly",
+      "startDate": "2026-01-01T00:00:00Z",
+      "dueDate": "2026-12-31T00:00:00Z",
+      "target": 2800000,
+      "statusRulePreset": "higher-is-better"
+    },
+    {
+      "metricName": "Margen operativo %",
+      "scorecardEnabled": true,
+      "goalName": "Margen operativo %",
+      "owner": "finance@example.com",
+      "cadence": "Quarterly",
+      "startDate": "2026-01-01T00:00:00Z",
+      "dueDate": "2026-12-31T00:00:00Z",
+      "target": 0.24,
+      "statusRulePreset": "higher-is-better"
+    },
+    {
+      "metricName": "Cash collected",
+      "scorecardEnabled": true,
+      "goalName": "Cash collected",
+      "owner": "treasury@example.com",
+      "cadence": "Monthly",
+      "startDate": "2026-01-01T00:00:00Z",
+      "dueDate": "2026-12-31T00:00:00Z",
+      "target": 10500000,
+      "statusRulePreset": "higher-is-better"
+    },
+    {
+      "metricName": "Retención %",
+      "scorecardEnabled": true,
+      "goalName": "Retención %",
+      "owner": "clientes@example.com",
+      "cadence": "Monthly",
+      "startDate": "2026-01-01T00:00:00Z",
+      "dueDate": "2026-12-31T00:00:00Z",
+      "target": 0.9,
+      "statusRulePreset": "higher-is-better"
+    },
+    {
+      "metricName": "Rentabilidad de proyectos",
+      "scorecardEnabled": true,
+      "goalName": "Rentabilidad de proyectos",
+      "owner": "proyectos@example.com",
+      "cadence": "Monthly",
+      "startDate": "2026-01-01T00:00:00Z",
+      "dueDate": "2026-12-31T00:00:00Z",
+      "target": 1600000,
+      "statusRulePreset": "higher-is-better"
+    }
+  ]
+}
