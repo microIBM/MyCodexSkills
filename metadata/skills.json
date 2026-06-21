@@ -992,6 +992,36 @@
       "updatedAt": "2026-06-21T14:45:51.351Z"
     },
     {
+      "id": "swiftui-expert-skill",
+      "name": "swiftui-expert-skill",
+      "description": "Use when writing, reviewing, or refactoring SwiftUI code for iOS or macOS, including state management and `@Observable` data flow, view composition and invalidation/performance, lists and `ForEach` identity, environment usage, localization, animations, Liquid Glass adoption, migrating soft-deprecated APIs, or Instruments `.trace` capture/analysis for hangs, hitches, CPU hotspots, or",
+      "status": "managed",
+      "localSource": "agents",
+      "installed": true,
+      "syncState": "clean",
+      "lastSyncedHash": "3588466827c0e65f210c053826e9ec05524116d8a698648d1cd45d910433b4fc",
+      "currentRepoHash": "3588466827c0e65f210c053826e9ec05524116d8a698648d1cd45d910433b4fc",
+      "currentLocalHash": "3588466827c0e65f210c053826e9ec05524116d8a698648d1cd45d910433b4fc",
+      "lastUsedAt": null,
+      "createdAt": "2026-06-21T14:47:57.589Z",
+      "updatedAt": "2026-06-21T14:47:57.589Z"
+    },
+    {
+      "id": "swiftui-glass-ui-designer",
+      "name": "swiftui-glass-ui-designer",
+      "description": "Upgrade an existing SwiftUI macOS app to a polished native glass-style interface without changing product behavior. Use for SwiftUI macOS Liquid Glass-style redesigns, translucent panels, glass cards, glass buttons, floating control-center layouts, visual polish, accessibility-safe materials, and reusable UI design-system work. Do not use for backend, business logic, models, API, database, networking, persistence, authentication, payments, subscriptions, analytics, or non-SwiftUI projects.",
+      "status": "managed",
+      "localSource": "codex",
+      "installed": true,
+      "syncState": "clean",
+      "lastSyncedHash": "697cfa5802a982defca1db72c2da1591fa6d4086e7abc76f34604a15cae5f36b",
+      "currentRepoHash": "697cfa5802a982defca1db72c2da1591fa6d4086e7abc76f34604a15cae5f36b",
+      "currentLocalHash": "697cfa5802a982defca1db72c2da1591fa6d4086e7abc76f34604a15cae5f36b",
+      "lastUsedAt": null,
+      "createdAt": "2026-06-21T14:47:57.612Z",
+      "updatedAt": "2026-06-21T14:47:57.612Z"
+    },
+    {
       "id": "team-audio",
       "name": "team-audio",
       "description": "Orchestrate audio team: audio-director + sound-designer + technical-artist + gameplay-programmer for full audio pipeline from direction to implementation.",
