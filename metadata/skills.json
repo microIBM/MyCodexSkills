@@ -1204,17 +1204,17 @@
     {
       "id": "ui-ux-pro-max",
       "name": "ui-ux-pro-max",
-      "description": "UI/UX design intelligence for web and mobile. Includes 50+ styles, 161 color palettes, 57 font pairings, 161 product types, 99 UX guidelines, and 25 chart types across 10 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui, and HTML/CSS). Actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, and check UI/UX code. Projects: website, landing page, dashboard, admin panel, e-commerce, SaaS, portfolio, blog, and mobile app. Elements: button, modal, navbar, sidebar, card, table, form, and chart. Styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, and flat design. Topics: color systems, accessibility, animation, layout, typography, font pairing, spacing, interaction states, shadow, and gradient. Integrations: shadcn/ui MCP for component search and examples.",
+      "description": "UI/UX design intelligence with searchable database",
       "status": "managed",
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "3c5a9ae61758c2ebf0f8afd8f2681f7986a7420f9976eff307b2e92e36ce02b1",
-      "currentRepoHash": "3c5a9ae61758c2ebf0f8afd8f2681f7986a7420f9976eff307b2e92e36ce02b1",
-      "currentLocalHash": "3c5a9ae61758c2ebf0f8afd8f2681f7986a7420f9976eff307b2e92e36ce02b1",
+      "lastSyncedHash": "7ba80dc104dd4ef7b7aac46df2dd1fc70e5788c320ba7980230ce839e27ee073",
+      "currentRepoHash": "7ba80dc104dd4ef7b7aac46df2dd1fc70e5788c320ba7980230ce839e27ee073",
+      "currentLocalHash": "7ba80dc104dd4ef7b7aac46df2dd1fc70e5788c320ba7980230ce839e27ee073",
       "lastUsedAt": null,
-      "createdAt": "2026-06-21T14:30:57.398Z",
-      "updatedAt": "2026-06-21T14:30:57.398Z"
+      "createdAt": "2026-06-21T14:45:22.737Z",
+      "updatedAt": "2026-06-21T14:45:22.737Z"
     },
     {
       "id": "ux-design",
