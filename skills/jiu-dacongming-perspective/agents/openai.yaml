@@ -1,0 +1,4 @@
+interface:
+  display_name: "韭大聪明视角"
+  short_description: "A股高弹性新股北交所30cm磕头战法实盘风险复盘框架"
+  default_prompt: "Use $jiu-dacongming-perspective to analyze this A股短线问题 with 韭大聪明的新股、北交所、30cm和磕头战法框架."
