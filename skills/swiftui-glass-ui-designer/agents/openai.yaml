@@ -1,0 +1,6 @@
+interface:
+  display_name: "SwiftUI Glass UI Designer"
+  short_description: "Upgrade SwiftUI macOS apps with a reusable native glass-style UI system."
+  default_prompt: "Use $swiftui-glass-ui-designer to upgrade this SwiftUI macOS app with a polished native glass-style interface. Inspect first, edit only UI/presentation code, do not change models, networking, persistence, auth, payments, or subscriptions, create reusable components, build the app, and summarize changed files."
+policy:
+  allow_implicit_invocation: true
