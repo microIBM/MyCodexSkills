@@ -1,0 +1,789 @@
+#!/usr/bin/env python3
+"""Run repeated external source probes through the stable fetch CLIs."""
+
+from __future__ import annotations
+
+import argparse
+from collections.abc import Callable
+from dataclasses import dataclass
+import json
+import math
+import subprocess
+import sys
+import time
+from pathlib import Path
+from typing import Any
+
+from lib.gates.external_source_evidence_archive import (
+    archive_evidence,
+    paths_overlap,
+    validate_archive_destination,
+    write_json,
+)
+from lib.gates.external_source_stability_summary import (
+    build_summary as build_probe_summary,
+    check,
+    command_elapsed_seconds,
+    defer_metadata_checks,
+    strict_errors as summary_strict_errors,
+    strict_failure_diagnostics as summary_strict_failure_diagnostics,
+)
+from lib.fetch.pytdx_a_share import DEFAULT_HOST, DEFAULT_PORT
+from lib.selection_core.a_share_selection_command_safety import (
+    REDACTED,
+    is_sensitive_mapping_value_key,
+    normalize_query_key,
+    sanitize_command,
+    sanitize_mapping_key,
+    sanitize_text,
+)
+
+
+SCRIPTS = Path(__file__).resolve().parent
+Executor = Callable[[list[str], float | None], subprocess.CompletedProcess[str]]
+SHORT_WINDOW_CLAIM_BOUNDARY = "current_window_parameters_network_only"
+
+
+@dataclass(frozen=True)
+class SourceSpec:
+    name: str
+    command: list[str]
+    metadata_path: Path
+    output_path: Path
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
+    manifest = initial_manifest(args)
+    output_dir = Path(args.output_dir)
+    summary_output = Path(args.summary_output)
+    if args.archive_dir:
+        try:
+            validate_archive_destination(
+                Path(args.archive_dir),
+                output_dir,
+                summary_output,
+            )
+        except Exception as exc:  # noqa: BLE001
+            output_written, write_error = write_failure_summary(
+                manifest,
+                summary_output,
+                archive_dir=Path(args.archive_dir),
+            )
+            print(
+                "ERROR: code=archive_failed "
+                f"output_written={str(output_written).lower()} message={exc}"
+                f"{format_summary_write_error(write_error)}",
+                file=sys.stderr,
+            )
+            return 2
+    try:
+        run_probe(args, output_dir=output_dir, manifest=manifest, executor=run_command)
+        write_json(manifest, summary_output)
+    except Exception as exc:  # noqa: BLE001
+        output_written, write_error = write_failure_summary(
+            manifest,
+            summary_output,
+            archive_dir=Path(args.archive_dir) if args.archive_dir else None,
+        )
+        print(
+            "ERROR: code=probe_failed "
+            f"output_written={str(output_written).lower()} message={exc}"
+            f"{format_summary_write_error(write_error)}",
+            file=sys.stderr,
+        )
+        return 2
+    if args.archive_dir:
+        try:
+            archive_evidence(manifest, Path(args.archive_dir))
+        except Exception as exc:  # noqa: BLE001
+            print(
+                f"ERROR: code=archive_failed output_written=true message={exc}",
+                file=sys.stderr,
+            )
+            return 2
+    errors = strict_errors(manifest)
+    if errors:
+        print_summary(manifest, prefix="ERROR_SUMMARY")
+        diagnostics = strict_failure_diagnostics(manifest)
+        detail = f"; {'; '.join(diagnostics)}" if diagnostics else ""
+        print(
+            f"ERROR: strict gate failed; {'; '.join(errors)}{detail} output_written=true",
+            file=sys.stderr,
+        )
+        return 3
+    print_summary(manifest)
+    return 0
+
+
+def write_failure_summary(
+    manifest: dict[str, Any],
+    summary_output: Path,
+    *,
+    archive_dir: Path | None,
+) -> tuple[bool, str | None]:
+    if archive_dir is not None:
+        try:
+            archive = archive_dir.resolve()
+            summary = summary_output.resolve()
+        except (OSError, RuntimeError):
+            return False, None
+        if paths_overlap(archive, summary):
+            return False, None
+    try:
+        write_json(manifest, summary_output)
+    except OSError as exc:
+        return False, str(exc)
+    return True, None
+
+
+def format_summary_write_error(write_error: str | None) -> str:
+    if write_error is None:
+        return ""
+    return f" summary_write_error={write_error}"
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Probe eastmoney, baostock_universe, akshare, pytdx, yfinance, "
+            "baostock, and zzshare source stability through fetch CLIs. "
+            "Repeated success only covers this run window and keeps "
+            "long_term_stability_claim=not_proven."
+        )
+    )
+    add_core_arguments(parser)
+    add_eastmoney_arguments(parser)
+    add_baostock_universe_arguments(parser)
+    add_akshare_arguments(parser)
+    add_pytdx_arguments(parser)
+    add_yfinance_arguments(parser)
+    add_command_timeout_argument(parser)
+    add_baostock_arguments(parser)
+    add_zzshare_arguments(parser)
+    return parser
+
+
+def add_core_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--output-dir", required=True)
+    parser.add_argument("--summary-output", required=True)
+    parser.add_argument(
+        "--archive-dir",
+        help=(
+            "Optional fresh directory for compact durable evidence: summary, metadata, "
+            "stdout, and stderr only. Price outputs are never archived."
+        ),
+    )
+    parser.add_argument("--iterations", type=positive_int, default=3)
+
+
+def add_eastmoney_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--eastmoney-pages", type=positive_int, default=1)
+    parser.add_argument("--eastmoney-page-size", type=positive_int, default=100)
+    parser.add_argument("--eastmoney-timeout-seconds", type=positive_float, default=10.0)
+    parser.add_argument("--eastmoney-retries", type=non_negative_int, default=5)
+    parser.add_argument(
+        "--eastmoney-retry-interval-seconds",
+        type=non_negative_float,
+        default=1.0,
+    )
+    parser.add_argument(
+        "--eastmoney-request-interval-seconds",
+        type=non_negative_float,
+        default=0.0,
+    )
+
+
+def add_baostock_universe_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--baostock-universe-lookback-days",
+        type=non_negative_int,
+        default=7,
+        help=(
+            "Probe-only lookback window for baostock universe. Default 7 improves "
+            "short-window observability and is not the production default; "
+            "fetch_baostock_a_share_universe.py and runner baostock_universe default to 0."
+        ),
+    )
+    parser.add_argument("--baostock-universe-retries", type=non_negative_int, default=1)
+    parser.add_argument(
+        "--baostock-universe-retry-interval-seconds",
+        type=non_negative_float,
+        default=1.0,
+    )
+
+
+def add_akshare_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--akshare-symbols", default="000001")
+    parser.add_argument("--akshare-start-date", default="2025-09-01")
+    parser.add_argument("--akshare-end-date", default="2026-05-29")
+
+
+def add_pytdx_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--pytdx-symbols", default="000001")
+    parser.add_argument(
+        "--pytdx-host",
+        default=DEFAULT_HOST,
+        help="Explicit Pytdx TDX host. Default matches fetch_pytdx_a_share.py.",
+    )
+    parser.add_argument(
+        "--pytdx-port",
+        type=positive_int,
+        default=DEFAULT_PORT,
+        help="Explicit Pytdx TDX port. Default matches fetch_pytdx_a_share.py.",
+    )
+    parser.add_argument("--pytdx-start-date", default="2026-01-01")
+    parser.add_argument("--pytdx-end-date", default="2026-01-10")
+    parser.add_argument("--pytdx-timeout-seconds", type=positive_float, default=10.0)
+    parser.add_argument("--pytdx-max-pages", type=positive_int, default=1)
+
+
+def add_yfinance_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--yfinance-symbols", default="AAPL,MSFT")
+    parser.add_argument("--yfinance-start-date", default="2024-01-01")
+    parser.add_argument("--yfinance-end-date", default="2026-05-29")
+    parser.add_argument("--yfinance-timeout-seconds", type=positive_float, default=10.0)
+
+
+def add_command_timeout_argument(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--command-timeout-seconds",
+        type=non_negative_float,
+        default=120.0,
+        help="Maximum seconds for each fetch command. Use 0 to disable.",
+    )
+
+
+def add_baostock_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--baostock-symbols", default="000001,600000")
+    parser.add_argument("--baostock-start-date", default="2024-01-01")
+    parser.add_argument("--baostock-end-date", default="2026-05-29")
+    parser.add_argument("--baostock-adjust", default="3")
+
+
+def add_zzshare_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--zzshare-symbols", default="000001,600000")
+    parser.add_argument("--zzshare-start-date", default="2024-01-01")
+    parser.add_argument("--zzshare-end-date", default="2026-05-29")
+    parser.add_argument("--zzshare-timeout-seconds", type=positive_float, default=10.0)
+    parser.add_argument(
+        "--zzshare-request-interval-seconds",
+        type=non_negative_float,
+        default=2.1,
+    )
+    parser.add_argument("--zzshare-limit", type=positive_int, default=1000)
+    parser.add_argument("--zzshare-max-pages", type=positive_int, default=10)
+
+
+def positive_int(value: str) -> int:
+    parsed = int(value)
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("value must be positive")
+    return parsed
+
+
+def non_negative_int(value: str) -> int:
+    parsed = int(value)
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("value must be non-negative")
+    return parsed
+
+
+def non_negative_float(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed) or parsed < 0:
+        raise argparse.ArgumentTypeError("value must be a finite non-negative number")
+    return parsed
+
+
+def positive_float(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed) or parsed <= 0:
+        raise argparse.ArgumentTypeError("value must be a finite positive number")
+    return parsed
+
+
+def run_command(
+    command: list[str],
+    timeout: float | None = None,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        command,
+        cwd=str(Path.cwd()),
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
+
+
+def run_probe(
+    args: argparse.Namespace,
+    *,
+    output_dir: Path,
+    manifest: dict[str, Any],
+    executor: Executor,
+    monotonic: Callable[[], float] | None = None,
+) -> None:
+    clock = monotonic or time.monotonic
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for iteration in range(1, int(args.iterations) + 1):
+        iteration_dir = output_dir / f"iteration-{iteration}"
+        iteration_dir.mkdir(parents=True, exist_ok=True)
+        for spec in source_specs(args, iteration_dir):
+            timeout = command_timeout(args)
+            started = clock()
+            timed_out = False
+            try:
+                result = executor(spec.command, timeout)
+            except subprocess.TimeoutExpired as exc:
+                timed_out = True
+                result = timeout_result(spec.command, exc)
+            elapsed = command_elapsed_seconds(started, clock())
+            metadata = read_metadata(spec.metadata_path)
+            source_result = source_record(
+                spec,
+                result,
+                metadata,
+                command_elapsed_seconds=elapsed,
+                command_timeout_seconds=timeout,
+                command_timed_out=timed_out,
+            )
+            manifest["results"].append(source_result)
+    manifest["summary"] = build_summary(manifest)
+
+
+def command_timeout(args: argparse.Namespace) -> float | None:
+    timeout = float(args.command_timeout_seconds)
+    if not math.isfinite(timeout) or timeout < 0:
+        raise ValueError("command timeout must be a finite non-negative number")
+    if timeout <= 0:
+        return None
+    return timeout
+
+
+def timeout_result(
+    command: list[str],
+    exc: subprocess.TimeoutExpired,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.CompletedProcess(
+        command,
+        124,
+        stdout=decode_timeout_output(exc.stdout),
+        stderr=f"command timed out after {exc.timeout} seconds",
+    )
+
+
+def decode_timeout_output(value: str | bytes | None) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode(errors="replace")
+    return value
+
+
+def source_specs(args: argparse.Namespace, iteration_dir: Path) -> list[SourceSpec]:
+    return [
+        eastmoney_spot_spec(args, iteration_dir),
+        baostock_universe_spec(args, iteration_dir),
+        akshare_spec(args, iteration_dir),
+        pytdx_spec(args, iteration_dir),
+        yfinance_spec(args, iteration_dir),
+        baostock_spec(args, iteration_dir),
+        zzshare_spec(args, iteration_dir),
+    ]
+
+
+def eastmoney_spot_spec(args: argparse.Namespace, iteration_dir: Path) -> SourceSpec:
+    output = iteration_dir / "eastmoney_spot" / "spot.csv"
+    metadata = iteration_dir / "eastmoney_spot" / "spot_metadata.json"
+    return SourceSpec(
+        name="eastmoney_spot",
+        output_path=output,
+        metadata_path=metadata,
+        command=script_command(
+            "fetch_eastmoney_a_share_spot.py",
+            "--output", output,
+            "--metadata-output", metadata,
+            "--pages", args.eastmoney_pages,
+            "--page-size", args.eastmoney_page_size,
+            "--timeout-seconds", args.eastmoney_timeout_seconds,
+            "--retries", args.eastmoney_retries,
+            "--retry-interval-seconds", args.eastmoney_retry_interval_seconds,
+            "--request-interval-seconds", args.eastmoney_request_interval_seconds,
+            "--fail-on-partial",
+        ),
+    )
+
+
+def baostock_universe_spec(args: argparse.Namespace, iteration_dir: Path) -> SourceSpec:
+    output = iteration_dir / "baostock_universe" / "spot.csv"
+    metadata = iteration_dir / "baostock_universe" / "spot_metadata.json"
+    return SourceSpec(
+        name="baostock_universe",
+        output_path=output,
+        metadata_path=metadata,
+        command=script_command(
+            "fetch_baostock_a_share_universe.py",
+            "--output", output,
+            "--metadata-output", metadata,
+            "--lookback-days", args.baostock_universe_lookback_days,
+            "--retries", args.baostock_universe_retries,
+            "--retry-interval-seconds", args.baostock_universe_retry_interval_seconds,
+            "--fail-on-partial",
+        ),
+    )
+
+
+def akshare_spec(args: argparse.Namespace, iteration_dir: Path) -> SourceSpec:
+    output = iteration_dir / "akshare" / "prices.csv"
+    metadata = iteration_dir / "akshare" / "metadata.json"
+    return SourceSpec(
+        name="akshare",
+        output_path=output,
+        metadata_path=metadata,
+        command=script_command(
+            "fetch_akshare_a_share.py",
+            "--symbols", args.akshare_symbols,
+            "--start-date", args.akshare_start_date,
+            "--end-date", args.akshare_end_date,
+            "--output", output,
+            "--metadata-output", metadata,
+        ),
+    )
+
+
+def pytdx_spec(args: argparse.Namespace, iteration_dir: Path) -> SourceSpec:
+    output = iteration_dir / "pytdx" / "prices.csv"
+    metadata = iteration_dir / "pytdx" / "metadata.json"
+    return SourceSpec(
+        name="pytdx",
+        output_path=output,
+        metadata_path=metadata,
+        command=script_command(
+            "fetch_pytdx_a_share.py",
+            "--symbols", args.pytdx_symbols,
+            "--start-date", args.pytdx_start_date,
+            "--end-date", args.pytdx_end_date,
+            "--output", output,
+            "--metadata-output", metadata,
+            "--host", args.pytdx_host,
+            "--port", args.pytdx_port,
+            "--timeout-seconds", args.pytdx_timeout_seconds,
+            "--max-pages", args.pytdx_max_pages,
+            "--fail-on-fetch-error",
+        ),
+    )
+
+
+def yfinance_spec(args: argparse.Namespace, iteration_dir: Path) -> SourceSpec:
+    output = iteration_dir / "yfinance" / "prices.csv"
+    metadata = iteration_dir / "yfinance" / "metadata.json"
+    return SourceSpec(
+        name="yfinance",
+        output_path=output,
+        metadata_path=metadata,
+        command=script_command(
+            "fetch_yfinance_ohlcv.py",
+            "--symbols", args.yfinance_symbols,
+            "--start-date", args.yfinance_start_date,
+            "--end-date", args.yfinance_end_date,
+            "--output", output,
+            "--metadata-output", metadata,
+            "--timeout-seconds", args.yfinance_timeout_seconds,
+            "--fail-on-fetch-error",
+        ),
+    )
+
+
+def baostock_spec(args: argparse.Namespace, iteration_dir: Path) -> SourceSpec:
+    output = iteration_dir / "baostock" / "prices.csv"
+    metadata = iteration_dir / "baostock" / "metadata.json"
+    return SourceSpec(
+        name="baostock",
+        output_path=output,
+        metadata_path=metadata,
+        command=script_command(
+            "fetch_baostock_a_share.py",
+            "--symbols", args.baostock_symbols,
+            "--start-date", args.baostock_start_date,
+            "--end-date", args.baostock_end_date,
+            "--output", output,
+            "--metadata-output", metadata,
+            "--adjust", args.baostock_adjust,
+            "--fail-on-fetch-error",
+        ),
+    )
+
+
+def zzshare_spec(args: argparse.Namespace, iteration_dir: Path) -> SourceSpec:
+    output = iteration_dir / "zzshare" / "prices.csv"
+    metadata = iteration_dir / "zzshare" / "metadata.json"
+    return SourceSpec(
+        name="zzshare",
+        output_path=output,
+        metadata_path=metadata,
+        command=script_command(
+            "fetch_zzshare_a_share.py",
+            "--symbols", args.zzshare_symbols,
+            "--start-date", args.zzshare_start_date,
+            "--end-date", args.zzshare_end_date,
+            "--output", output,
+            "--metadata-output", metadata,
+            "--timeout-seconds", args.zzshare_timeout_seconds,
+            "--request-interval-seconds", args.zzshare_request_interval_seconds,
+            "--limit", args.zzshare_limit,
+            "--max-pages", args.zzshare_max_pages,
+            "--fail-on-fetch-error",
+        ),
+    )
+
+
+def script_command(script: str, *parts: object) -> list[str]:
+    return [sys.executable, str(SCRIPTS / script), *[str(part) for part in parts]]
+
+
+def read_metadata(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def source_record(
+    spec: SourceSpec,
+    result: subprocess.CompletedProcess[str],
+    metadata: dict[str, Any],
+    *,
+    command_elapsed_seconds: float | None = None,
+    command_timeout_seconds: float | None = None,
+    command_timed_out: bool = False,
+) -> dict[str, Any]:
+    checks = source_checks(spec.name, metadata, spec.command)
+    passed = result.returncode == 0 and all(
+        item["status"] == "passed" for item in required_checks(checks)
+    )
+    metadata_output_is_symlink = spec.metadata_path.is_symlink()
+    metadata_output_is_file = (
+        not metadata_output_is_symlink and spec.metadata_path.is_file()
+    )
+    return {
+        "source": spec.name,
+        "command": sanitize_command(spec.command),
+        "returncode": result.returncode,
+        "command_elapsed_seconds": command_elapsed_seconds,
+        "command_timeout_seconds": command_timeout_seconds,
+        "command_timed_out": command_timed_out,
+        "stdout": sanitize_text(decode_timeout_output(result.stdout)),
+        "stderr": sanitize_text(decode_timeout_output(result.stderr)),
+        "output": sanitize_text(str(spec.output_path)),
+        "metadata_output": sanitize_text(str(spec.metadata_path)),
+        "metadata_output_is_file": metadata_output_is_file,
+        "metadata_output_is_symlink": metadata_output_is_symlink,
+        "metadata": sanitize_persisted_value(metadata),
+        "checks": checks,
+        "passed": passed,
+    }
+
+
+def sanitize_persisted_value(value: Any) -> Any:
+    if isinstance(value, str):
+        return sanitize_text(value)
+    if isinstance(value, list):
+        return [sanitize_persisted_value(item) for item in value]
+    if isinstance(value, dict):
+        return sanitize_persisted_mapping(value)
+    return value
+
+
+def sanitize_persisted_mapping(value: dict[Any, Any]) -> dict[str, Any]:
+    entries = []
+    for key, item in value.items():
+        raw_key = str(key)
+        sanitized_key = sanitize_mapping_key(raw_key)
+        sanitized_value = (
+            REDACTED
+            if sensitive_persisted_mapping_value(raw_key, item)
+            else sanitize_persisted_value(item)
+        )
+        entries.append((sanitized_key, raw_key, sanitized_value))
+    entries.sort(key=lambda entry: (entry[0], entry[1]))
+
+    sanitized: dict[str, Any] = {}
+    for sanitized_key, _raw_key, sanitized_value in entries:
+        sanitized[unique_persisted_mapping_key(sanitized_key, sanitized)] = sanitized_value
+    return sanitized
+
+
+def sensitive_persisted_mapping_value(key: str, value: Any) -> bool:
+    # This narrow exception applies only to parsed metadata mappings. Free text
+    # remains fail-closed because a token-like key cannot prove its value is safe.
+    if normalize_query_key(key) == "token_configured" and isinstance(value, bool):
+        return False
+    return is_sensitive_mapping_value_key(key)
+
+
+def unique_persisted_mapping_key(key: str, existing: dict[str, Any]) -> str:
+    candidate = key
+    duplicate_number = 2
+    while candidate in existing:
+        candidate = f"{key} [duplicate {duplicate_number}]"
+        duplicate_number += 1
+    return candidate
+
+
+def source_checks(source: str, metadata: dict[str, Any], command: list[str] | None = None) -> list[dict[str, Any]]:
+    if source == "eastmoney_spot":
+        return defer_metadata_checks(spot_snapshot_checks(metadata, source="eastmoney"), metadata)
+    if source == "baostock_universe":
+        checks = spot_snapshot_checks(metadata, source="baostock") + [
+            check(
+                "resolved_snapshot_date_recorded",
+                bool(metadata.get("resolved_snapshot_date")),
+            ),
+            check(
+                "lookback_matches_request",
+                str(metadata.get("lookback_days", "")) == requested_value(
+                    command,
+                    "--lookback-days",
+                ),
+            ),
+        ]
+        return defer_metadata_checks(checks, metadata)
+    common = history_checks(metadata)
+    if source == "akshare":
+        checks = common + [
+            check(
+                "invalid_rows_accounted",
+                int(metadata.get("invalid_rows", 0)) == int(metadata.get("dropped_invalid_rows", 0)),
+            ),
+            check("hist_provider_clean", not metadata.get("fallback_errors"), required=False),
+        ]
+        return defer_metadata_checks(checks, metadata)
+    if source == "pytdx":
+        missing = set(metadata.get("missing_provider_fields", []))
+        checks = common + [
+            check(
+                "invalid_rows_accounted",
+                int(metadata.get("invalid_rows", 0)) == int(metadata.get("dropped_invalid_rows", 0)),
+            ),
+            check("timeout_seconds_recorded", float(metadata.get("timeout_seconds", 0.0)) > 0),
+            check("max_pages_matches_request", str(metadata.get("max_pages", "")) == requested_value(command, "--max-pages")),
+            check("token_not_configured", metadata.get("token_configured") is False),
+            check(
+                "missing_provider_fields_disclosed",
+                {"turn", "tradestatus", "isST", "name"}.issubset(missing),
+            ),
+            check(
+                "license_boundary_disclosed",
+                bool(metadata.get("license_claim_boundary")),
+            ),
+        ]
+        return defer_metadata_checks(checks, metadata)
+    if source == "yfinance":
+        checks = common + [
+            check("timeout_seconds_recorded", float(metadata.get("timeout_seconds", 0.0)) > 0),
+            check("close_adjustment_recorded", metadata.get("adjustment") == "auto_adjust_false_close"),
+        ]
+        return defer_metadata_checks(checks, metadata)
+    if source == "baostock":
+        checks = common + [
+            check("invalid_rows_accounted", int(metadata.get("invalid_rows", 0)) == int(metadata.get("dropped_invalid_rows", 0))),
+            check("non_trading_rows_zero", int(metadata.get("non_trading_rows", 0)) == 0),
+            check("tradestatus_missing_rows_zero", int(metadata.get("tradestatus_missing_rows", 0)) == 0),
+            check("adjustflag_matches_request", str(metadata.get("adjustflag", "")) == requested_value(command, "--adjust")),
+        ]
+        return defer_metadata_checks(checks, metadata)
+    if source == "zzshare":
+        checks = common + [
+            check("invalid_rows_accounted", int(metadata.get("invalid_rows", 0)) == int(metadata.get("dropped_invalid_rows", 0))),
+            check("non_trading_rows_zero", int(metadata.get("non_trading_rows", 0)) == 0),
+            check("tradestatus_missing_rows_zero", int(metadata.get("tradestatus_missing_rows", 0)) == 0),
+            check("possibly_truncated_symbols_empty", not metadata.get("possibly_truncated_symbols")),
+            check("fields_all", str(metadata.get("fields", "")) == "all"),
+            check("limit_matches_request", str(metadata.get("limit", "")) == requested_value(command, "--limit")),
+            check("max_pages_matches_request", str(metadata.get("max_pages", "")) == requested_value(command, "--max-pages")),
+        ]
+        return defer_metadata_checks(checks, metadata)
+    return defer_metadata_checks(common, metadata)
+
+
+def spot_snapshot_checks(metadata: dict[str, Any], *, source: str) -> list[dict[str, Any]]:
+    return [
+        check("metadata_written", bool(metadata)),
+        check("source_matches", str(metadata.get("source", "")) == source),
+        check("raw_items_positive", int(metadata.get("raw_items", 0)) > 0),
+        check("filtered_items_positive", int(metadata.get("filtered_items", 0)) > 0),
+        check("partial_result_false", metadata.get("partial_result") is False),
+        check("output_written", metadata.get("output_written") is True),
+        check("metadata_output_written", metadata.get("metadata_output_written") is True),
+    ]
+
+
+def history_checks(metadata: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        check("metadata_written", bool(metadata)),
+        check("rows_positive", int(metadata.get("rows", 0)) > 0),
+        check("symbol_count_matches_requested", int(metadata.get("symbol_count", -1)) == len(metadata.get("requested_symbols", []))),
+        check("failed_symbols_empty", not metadata.get("failed_symbols")),
+        check("empty_symbols_empty", not metadata.get("empty_symbols")),
+    ]
+
+
+def requested_value(command: list[str] | None, option: str) -> str:
+    if not command or option not in command:
+        return ""
+    index = command.index(option)
+    if index + 1 >= len(command):
+        return ""
+    return str(command[index + 1])
+
+
+def required_checks(checks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [item for item in checks if item.get("required", True)]
+
+
+def build_summary(manifest: dict[str, Any]) -> dict[str, Any]:
+    return build_probe_summary(
+        manifest,
+        short_window_claim_boundary=SHORT_WINDOW_CLAIM_BOUNDARY,
+    )
+
+
+def strict_errors(manifest: dict[str, Any]) -> list[str]:
+    return summary_strict_errors(manifest.get("summary", {}))
+
+
+def strict_failure_diagnostics(manifest: dict[str, Any]) -> list[str]:
+    results = manifest.get("results", [])
+    if not isinstance(results, list):
+        return []
+    return summary_strict_failure_diagnostics(
+        results,
+        manifest.get("summary", {}),
+    )
+
+
+def initial_manifest(args: argparse.Namespace) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "probe_type": "external_source_stability",
+        "iterations": int(args.iterations),
+        "long_term_stability_claim": "not_proven",
+        "short_window_claim_boundary": SHORT_WINDOW_CLAIM_BOUNDARY,
+        "results": [],
+        "summary": {},
+    }
+
+
+def print_summary(manifest: dict[str, Any], prefix: str = "OK") -> None:
+    summary = manifest.get("summary", {})
+    print(
+        f"{prefix}: probe_type=external_source_stability iterations={summary.get('iterations', 0)} "
+        f"total_runs={summary.get('total_runs', 0)} passed_runs={summary.get('passed_runs', 0)} "
+        f"all_sources_all_iterations_passed={summary.get('all_sources_all_iterations_passed', False)} "
+        "long_term_stability_claim=not_proven "
+        f"short_window_claim_boundary={summary.get('short_window_claim_boundary', SHORT_WINDOW_CLAIM_BOUNDARY)}"
+    )
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

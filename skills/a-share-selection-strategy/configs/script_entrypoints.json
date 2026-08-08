@@ -1,0 +1,573 @@
+{
+  "schema_version": 3,
+  "claim_boundary": "script_entrypoint_registry_only_not_runtime_dispatch_or_cli_contract_replacement",
+  "categories": {
+    "stable_cli": "User-facing local CLI entrypoints that may be copied from docs.",
+    "fetch_cli": "Network or external-provider fetch entrypoints that must persist local files and metadata before scoring.",
+    "gate_backtest_cli": "Audit, prediction, allocation, backtest, walk-forward, probe, or recovery entrypoints; outputs are gates or diagnostics, not investment proof.",
+    "internal_helper": "Implementation helper modules. Direct execution, when present, is fail-fast only and not a user CLI contract."
+  },
+  "axes": {
+    "visibility": {
+      "public": "User-facing script entry that may be referenced by docs and copied into commands.",
+      "internal": "Implementation detail; not a user CLI and not eligible for SKILL.md direct routing."
+    },
+    "kind": {
+      "cli": "Executable command-line entrypoint with a user-facing contract.",
+      "helper": "Importable implementation helper; direct execution is fail-fast only when present."
+    },
+    "stability": {
+      "stable": "Stable local CLI entrypoint.",
+      "stable_external": "Stable external-provider fetch CLI; network/provider behavior remains outside local proof.",
+      "stable_gate": "Stable gate/backtest/probe CLI; output is diagnostic or audit evidence, not investment proof.",
+      "internal": "Internal implementation surface with no user CLI compatibility promise."
+    },
+    "domain": {
+      "selection_core": "Core local validation, scoring, symbols, data, metrics, and disclosure logic.",
+      "fetch": "External or provider-specific data fetch logic.",
+      "gate_backtest": "Allocation, prediction, backtest, walk-forward, probe, recovery, and artifact gates.",
+      "report_html": "HTML report rendering and presentation helpers only.",
+      "runner": "Today-runner orchestration helpers.",
+      "walk_forward": "Walk-forward artifact and command helpers.",
+      "compatibility_wrapper": "Root-level compatibility wrapper around internal lib implementation.",
+      "internal_support": "Internal support helper that is not a public route."
+    },
+    "default_entry": {
+      "true": "Core task-topology CLI that an Agent may select without first resolving a path-specific gate or provider.",
+      "false": "Path-specific public CLI or internal helper; select only after the task route or artifact gate requires it."
+    }
+  },
+  "entries": {
+    "a_share_selection_calendar_contract.py": {
+      "category": "internal_helper",
+      "visibility": "internal",
+      "kind": "helper",
+      "stability": "internal",
+      "domain": "compatibility_wrapper",
+      "skill_route": false,
+      "public_entry": false,
+      "network_required": false,
+      "real_gate_boundary": "compatibility_wrapper_not_user_cli",
+      "primary_artifacts": [],
+      "migration_target": "lib/a_share_selection_calendar_contract.py",
+      "deletion_blocker": "external_root_import_compatibility_and_wrapper_contract_tests",
+      "default_entry": false
+    },
+    "a_share_selection_cli_guard.py": {
+      "category": "internal_helper",
+      "visibility": "internal",
+      "kind": "helper",
+      "stability": "internal",
+      "domain": "compatibility_wrapper",
+      "skill_route": false,
+      "public_entry": false,
+      "network_required": false,
+      "real_gate_boundary": "compatibility_wrapper_not_user_cli",
+      "primary_artifacts": [],
+      "migration_target": "lib/a_share_selection_cli_guard.py",
+      "deletion_blocker": "external_root_import_compatibility_and_wrapper_contract_tests",
+      "default_entry": false
+    },
+    "a_share_selection_config.py": {
+      "category": "internal_helper",
+      "visibility": "internal",
+      "kind": "helper",
+      "stability": "internal",
+      "domain": "compatibility_wrapper",
+      "skill_route": false,
+      "public_entry": false,
+      "network_required": false,
+      "real_gate_boundary": "compatibility_wrapper_not_user_cli",
+      "primary_artifacts": [],
+      "migration_target": "lib/a_share_selection_config.py",
+      "deletion_blocker": "external_root_import_compatibility_and_wrapper_contract_tests",
+      "default_entry": false
+    },
+    "a_share_selection_paths.py": {
+      "category": "internal_helper",
+      "visibility": "internal",
+      "kind": "helper",
+      "stability": "internal",
+      "domain": "compatibility_wrapper",
+      "skill_route": false,
+      "public_entry": false,
+      "network_required": false,
+      "real_gate_boundary": "compatibility_wrapper_not_user_cli",
+      "primary_artifacts": [],
+      "migration_target": "lib/a_share_selection_paths.py",
+      "deletion_blocker": "external_root_import_compatibility_and_wrapper_contract_tests",
+      "default_entry": false
+    },
+    "allocate_candidate_capital.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "local_sizing_artifact_not_broker_order_or_real_cash_proof",
+      "primary_artifacts": [
+        "candidate_allocation.csv",
+        "candidate_allocation_summary.json"
+      ],
+      "default_entry": false
+    },
+    "allocate_portfolio_candidate_capital.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "portfolio_sizing_artifact_not_broker_order_or_fill_proof",
+      "primary_artifacts": [
+        "portfolio_candidate_allocation.csv",
+        "portfolio_candidate_allocation_summary.json"
+      ],
+      "default_entry": false
+    },
+    "backtest_buy_hold.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "signal_close_next_observed_open_to_close_baseline_not_live_backtest_or_real_net_return",
+      "primary_artifacts": [
+        "trades.csv",
+        "backtest_summary.json"
+      ],
+      "default_entry": false
+    },
+    "create_demo_data.py": {
+      "category": "stable_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable",
+      "domain": "selection_core",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "synthetic_demo_only_not_real_market_data_or_candidates",
+      "primary_artifacts": [
+        "prices.csv",
+        "prices_with_prediction.csv",
+        "spot.csv",
+        "metadata.json"
+      ],
+      "default_entry": false
+    },
+    "fetch_akshare_a_share.py": {
+      "category": "fetch_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_external",
+      "domain": "fetch",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "external_fetch_must_persist_metadata_fallback_success_not_primary_stability",
+      "primary_artifacts": [
+        "prices.csv",
+        "metadata.json"
+      ],
+      "default_entry": false
+    },
+    "fetch_akshare_hk_daily.py": {
+      "category": "fetch_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_external",
+      "domain": "fetch",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "hk_ohlcv_fetch_not_a_share_or_hk_exchange_calendar_proof",
+      "primary_artifacts": [
+        "prices.csv",
+        "metadata.json"
+      ],
+      "default_entry": false
+    },
+    "fetch_baostock_a_share.py": {
+      "category": "fetch_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_external",
+      "domain": "fetch",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "external_fetch_must_persist_metadata_not_full_a_high_throughput_proof",
+      "primary_artifacts": [
+        "prices.csv",
+        "prices.parquet",
+        "metadata.json"
+      ],
+      "default_entry": false
+    },
+    "fetch_baostock_a_share_universe.py": {
+      "category": "fetch_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_external",
+      "domain": "fetch",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "baostock_universe_snapshot_not_realtime_spot_or_full_market_proof",
+      "date_resolution": "optional_lookback_days_records_requested_and_resolved_snapshot_dates",
+      "retry_policy": "explicit_retries_recorded_as_fetch_errors_fetch_attempts_and_max_attempts",
+      "primary_artifacts": [
+        "spot.csv",
+        "spot_metadata.json"
+      ],
+      "default_entry": false
+    },
+    "fetch_eastmoney_a_share_spot.py": {
+      "category": "fetch_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_external",
+      "domain": "fetch",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "spot_snapshot_not_historical_ohlcv_or_pagination_completeness_proof",
+      "primary_artifacts": [
+        "spot.csv",
+        "spot_metadata.json"
+      ],
+      "default_entry": false
+    },
+    "fetch_pytdx_a_share.py": {
+      "category": "fetch_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_external",
+      "domain": "fetch",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "pytdx_external_fetch_not_turnover_tradability_or_stability_proof",
+      "primary_artifacts": [
+        "prices.csv",
+        "metadata.json"
+      ],
+      "default_entry": false
+    },
+    "fetch_yfinance_ohlcv.py": {
+      "category": "fetch_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_external",
+      "domain": "fetch",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "generic_ohlcv_fetch_not_a_share_turnover_or_calendar_proof",
+      "primary_artifacts": [
+        "prices.csv",
+        "metadata.json"
+      ],
+      "default_entry": false
+    },
+    "fetch_zzshare_a_share.py": {
+      "category": "fetch_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_external",
+      "domain": "fetch",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "token_backed_external_fetch_not_quota_truncation_or_broker_proof",
+      "primary_artifacts": [
+        "prices.csv",
+        "metadata.json"
+      ],
+      "default_entry": false
+    },
+    "generate_lightgbm_predictions.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "local_prediction_generator_not_external_model_quality_or_no_leakage_proof",
+      "primary_artifacts": [
+        "predictions.csv",
+        "prediction_summary.json"
+      ],
+      "default_entry": false
+    },
+    "portfolio_equity_curve.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "portfolio_curve_from_artifacts_not_live_return_or_broker_proof",
+      "primary_artifacts": [
+        "portfolio_equity_curve.csv",
+        "portfolio_equity_summary.json"
+      ],
+      "default_entry": false
+    },
+    "portfolio_overlap_report.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "overlap_report_not_exchange_calendar_or_capacity_completion_proof",
+      "primary_artifacts": [
+        "portfolio_overlap_report.csv",
+        "portfolio_overlap_summary.json"
+      ],
+      "default_entry": false
+    },
+    "prepare_history_retry_symbols.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "recovery_plan_only_not_full_market_completion",
+      "primary_artifacts": [
+        "history_retry_symbols.txt",
+        "history_retry_symbols.json"
+      ],
+      "default_entry": false
+    },
+    "prepare_clean_history_pool.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "clean_history_pool_from_existing_artifacts_not_full_market_proof",
+      "primary_artifacts": [
+        "clean_prices.csv",
+        "clean_prices.parquet",
+        "clean_metadata.json",
+        "clean_history_report.json",
+        "full_a_clean_pool_provenance.json"
+      ],
+      "default_entry": false
+    },
+    "prepare_incremental_history_plan.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "incremental_history_plan_only_not_history_fetch_success",
+      "primary_artifacts": [
+        "incremental_history_plan.json",
+        "incremental_history_symbols.txt"
+      ],
+      "default_entry": false
+    },
+    "execute_incremental_history_plan.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "bucket_fetch_execution_not_full_market_or_selection_proof",
+      "primary_artifacts": [
+        "execution_manifest.json",
+        "incremental_prices.csv",
+        "incremental_metadata.json"
+      ],
+      "default_entry": false
+    },
+    "probe_baostock_limit_fields.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "field_probe_not_limit_rule_model_or_long_term_provider_stability",
+      "primary_artifacts": [
+        "baostock_limit_fields_probe.json"
+      ],
+      "default_entry": false
+    },
+    "probe_external_source_stability.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "short_window_probe_not_long_term_provider_stability",
+      "primary_artifacts": [
+        "external_source_stability.json"
+      ],
+      "default_entry": false
+    },
+    "run_baostock_walk_forward.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": true,
+      "real_gate_boundary": "walk_forward_runner_requires_artifact_validation_offline_plan_is_not_real_gate",
+      "primary_artifacts": [
+        "run_manifest.json",
+        "prediction_run_summary.json"
+      ],
+      "default_entry": false
+    },
+    "run_today_a_share_selection.py": {
+      "category": "stable_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable",
+      "domain": "selection_core",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "runner_orchestrates_local_artifacts_network_only_when_explicit_history_source_is_configured",
+      "primary_artifacts": [
+        "run_manifest.json",
+        "summary.json",
+        "candidates.csv",
+        "diagnostics.csv",
+        "report.html"
+      ],
+      "default_entry": true
+    },
+    "score_candidates.py": {
+      "category": "stable_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable",
+      "domain": "selection_core",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "local_scoring_consumes_inputs_only_not_prediction_training_or_trade_advice",
+      "primary_artifacts": [
+        "candidates.csv",
+        "diagnostics.csv",
+        "stdout_summary"
+      ],
+      "default_entry": true
+    },
+    "slice_prices_as_of.py": {
+      "category": "stable_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable",
+      "domain": "selection_core",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "local_price_slice_not_validation_or_scoring_completion",
+      "primary_artifacts": [
+        "prices_as_of.csv",
+        "slice_metadata.json"
+      ],
+      "default_entry": false
+    },
+    "summarize_walk_forward_run.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "artifact_summary_not_missing_model_or_capacity_gate_proof",
+      "primary_artifacts": [
+        "walk_forward_summary.json"
+      ],
+      "default_entry": false
+    },
+    "validate_ohlcv.py": {
+      "category": "stable_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable",
+      "domain": "selection_core",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "local_input_contract_only_not_real_market_or_prediction_quality_proof",
+      "primary_artifacts": [
+        "stdout_summary"
+      ],
+      "default_entry": true
+    },
+    "validate_walk_forward_artifacts.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "artifact_validator_not_capacity_pass_when_capacity_gate_false",
+      "primary_artifacts": [
+        "validation_report.json"
+      ],
+      "default_entry": false
+    },
+    "validate_walk_forward_manifest.py": {
+      "category": "gate_backtest_cli",
+      "visibility": "public",
+      "kind": "cli",
+      "stability": "stable_gate",
+      "domain": "gate_backtest",
+      "skill_route": true,
+      "public_entry": true,
+      "network_required": false,
+      "real_gate_boundary": "manifest_validator_not_artifact_content_or_real_gate_proof",
+      "primary_artifacts": [
+        "manifest_validation.json"
+      ],
+      "default_entry": false
+    }
+  }
+}

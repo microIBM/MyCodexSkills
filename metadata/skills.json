@@ -2,6 +2,21 @@
   "schemaVersion": 1,
   "skills": [
     {
+      "id": "a-share-selection-strategy",
+      "name": "a-share-selection-strategy",
+      "description": "提供可复现、可审查的股票选股流程。用于今日 A 股、全 A 扫描、扩大股票池、低价超短、prediction-derived、多因子评分、候选解释和策略审查；已落地港股/美股数据集可按同一契约审查。缺少本地行情或明确联网授权时，不得输出候选名单、模拟行情、预测或收益；所有输出均非投资建议、非交易指令。",
+      "status": "managed",
+      "localSource": "codex",
+      "installed": true,
+      "syncState": "clean",
+      "lastSyncedHash": "124d71b2f401b213f5da2773204660637c96fa882ea9566007f99274c658231a",
+      "currentRepoHash": "124d71b2f401b213f5da2773204660637c96fa882ea9566007f99274c658231a",
+      "currentLocalHash": "124d71b2f401b213f5da2773204660637c96fa882ea9566007f99274c658231a",
+      "lastUsedAt": null,
+      "createdAt": "2026-08-08T04:45:14.166Z",
+      "updatedAt": "2026-08-08T04:45:14.166Z"
+    },
+    {
       "id": "adopt",
       "name": "adopt",
       "description": "Brownfield onboarding — audits existing project artifacts for template format compliance (not just existence), classifies gaps by impact, and produces a numbered migration plan. Run this when joining an in-progress project or upgrading from an older template version. Distinct from /project-stage-detect (which checks what exists) — this checks whether what exists will actually work with the template's skills.",
@@ -1350,6 +1365,21 @@
       "lastUsedAt": null,
       "createdAt": "2026-06-21T14:30:57.408Z",
       "updatedAt": "2026-06-21T14:45:51.442Z"
+    },
+    {
+      "id": "uzi",
+      "name": "uzi",
+      "description": "A-share, Hong Kong, and US stock analysis skill for deep research, quick scans, investor panel review, hot-money/LHB analysis, trap detection, valuation, IC memos, and Bloomberg-style HTML reports.",
+      "status": "managed",
+      "localSource": "codex",
+      "installed": true,
+      "syncState": "clean",
+      "lastSyncedHash": "def58b394569543529094a337d57ed4aa8d944f0aeb18bddc416a2655ae07d7e",
+      "currentRepoHash": "def58b394569543529094a337d57ed4aa8d944f0aeb18bddc416a2655ae07d7e",
+      "currentLocalHash": "def58b394569543529094a337d57ed4aa8d944f0aeb18bddc416a2655ae07d7e",
+      "lastUsedAt": null,
+      "createdAt": "2026-08-08T04:45:16.355Z",
+      "updatedAt": "2026-08-08T04:45:16.355Z"
     },
     {
       "id": "youzi-48-xinfa",

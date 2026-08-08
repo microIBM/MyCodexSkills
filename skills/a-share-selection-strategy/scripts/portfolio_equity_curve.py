@@ -1,0 +1,323 @@
+#!/usr/bin/env python3
+"""Build a simple equal-weight equity curve from backtest CSV files."""
+
+from __future__ import annotations
+
+import argparse
+import math
+import sys
+from pathlib import Path
+from typing import Any
+
+from lib.selection_core.a_share_selection_sizing_contracts import (
+    require_finite_number,
+    require_positive_number,
+)
+from lib.gates.a_share_selection_output_safety import (
+    prepare_output_paths,
+    remove_output_files,
+)
+from lib.selection_core.a_share_selection_cli_numeric import (
+    normalize_negative_non_finite_option_values,
+)
+
+
+REQUIRED_COLUMNS = ["signal_date", "return", "missing_data", "status"]
+MIN_DRAWDOWN_FLOOR = -1.0
+MAX_DRAWDOWN_FLOOR = 0.0
+CLAIM_BOUNDARY = "local_complete_trades_baseline_not_return_promise"
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Build an equal-weight equity curve from backtest outputs. Defaults "
+            "to complete trades only; final_equity_excludes_incomplete=true. "
+            "Use --fail-on-incomplete for strict gates."
+        )
+    )
+    parser.add_argument(
+        "--backtests", nargs="+", required=True, help="Backtest CSV/Parquet paths."
+    )
+    parser.add_argument("--output", required=True, help="Output equity curve CSV path.")
+    parser.add_argument("--initial-equity", type=float, default=1.0)
+    parser.add_argument("--fail-on-incomplete", action="store_true")
+    parser.add_argument(
+        "--min-final-equity",
+        type=float,
+        default=None,
+        help="Fail if final equity is lower than this value.",
+    )
+    parser.add_argument(
+        "--max-drawdown-floor",
+        type=float,
+        default=None,
+        help="Fail if max_drawdown is lower than this value, for example -0.10.",
+    )
+    args = parser.parse_args(
+        normalize_negative_non_finite_option_values(argv, NUMERIC_OPTIONS)
+    )
+    output = Path(args.output)
+    output_prepared = False
+    try:
+        prepare_output_paths(
+            [output],
+            [Path(path) for path in args.backtests],
+        )
+        output_prepared = True
+        ensure_runtime_dependencies()
+        validate_gate_thresholds(args.min_final_equity, args.max_drawdown_floor)
+        frames = [read_table(Path(path)) for path in args.backtests]
+        curve, summary = build_equity_curve(
+            frames,
+            initial_equity=args.initial_equity,
+        )
+        violations = gate_violations(
+            summary,
+            fail_on_incomplete=args.fail_on_incomplete,
+            min_final_equity=args.min_final_equity,
+            max_drawdown_floor=args.max_drawdown_floor,
+        )
+        if violations:
+            print_summary(summary, args.output, prefix="ERROR_SUMMARY")
+            print(
+                "ERROR: strict gate failed; "
+                + "; ".join(violations)
+                + " output_not_written=true",
+                file=sys.stderr,
+            )
+            return 3
+        write_output(curve, output)
+    except Exception as exc:  # noqa: BLE001
+        if output_prepared:
+            remove_output_files([output])
+        print(
+            f"ERROR: code=bad_input output_written=false message={exc}",
+            file=sys.stderr,
+        )
+        return 2
+    print_summary(summary, args.output)
+    print_incomplete_warning(summary, args.fail_on_incomplete)
+    return 0
+
+
+NUMERIC_OPTIONS = (
+    "--initial-equity",
+    "--min-final-equity",
+    "--max-drawdown-floor",
+)
+
+
+def ensure_runtime_dependencies() -> None:
+    if "pd" in globals():
+        return
+    import pandas as pandas_module
+    import lib.selection_core.a_share_selection_data as data_module
+
+    globals().update(
+        {
+            "pd": pandas_module,
+            "parse_dates": data_module.parse_dates,
+            "read_table": data_module.read_table,
+        }
+    )
+
+
+def validate_gate_thresholds(
+    min_final_equity: float | None,
+    max_drawdown_floor: float | None,
+) -> None:
+    if min_final_equity is not None:
+        require_positive_number(min_final_equity, "min-final-equity")
+    if max_drawdown_floor is None:
+        return
+    max_drawdown_floor = require_finite_number(max_drawdown_floor, "max-drawdown-floor")
+    if (
+        max_drawdown_floor < MIN_DRAWDOWN_FLOOR
+        or max_drawdown_floor > MAX_DRAWDOWN_FLOOR
+    ):
+        raise ValueError("max-drawdown-floor must be between -1.0 and 0.0")
+
+
+def gate_violations(
+    summary: dict[str, Any],
+    *,
+    fail_on_incomplete: bool,
+    min_final_equity: float | None,
+    max_drawdown_floor: float | None,
+) -> list[str]:
+    violations: list[str] = []
+    if fail_on_incomplete and summary["incomplete_trades"]:
+        violations.append(f"incomplete_trades={summary['incomplete_trades']}")
+    if min_final_equity is not None and summary["final_equity"] < min_final_equity:
+        violations.append(
+            f"final_equity={summary['final_equity']} min_final_equity={min_final_equity}"
+        )
+    if max_drawdown_floor is not None and summary["max_drawdown"] < max_drawdown_floor:
+        violations.append(
+            f"max_drawdown={summary['max_drawdown']} max_drawdown_floor={max_drawdown_floor}"
+        )
+    return violations
+
+
+def build_equity_curve(
+    frames: list[pd.DataFrame],
+    *,
+    initial_equity: float,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    ensure_runtime_dependencies()
+    initial_equity = require_positive_number(initial_equity, "initial-equity")
+    if not frames:
+        raise ValueError("at least one backtest file is required")
+    periods = [period_row(frame) for frame in frames]
+    curve = pd.DataFrame(periods).sort_values("signal_date").reset_index(drop=True)
+    multipliers = 1 + curve["mean_return"]
+    require_finite_values(multipliers, "equity multiplier")
+    if (multipliers < 0).any():
+        raise ValueError("equity multiplier must be >= 0")
+    cumulative_multiplier = multipliers.cumprod()
+    require_finite_values(cumulative_multiplier, "cumulative equity multiplier")
+    curve["equity"] = initial_equity * cumulative_multiplier
+    require_finite_values(curve["equity"], "equity")
+    curve["running_peak"] = curve["equity"].cummax().clip(lower=initial_equity)
+    curve["drawdown"] = curve["equity"] / curve["running_peak"] - 1
+    require_finite_values(curve["running_peak"], "running peak")
+    require_finite_values(curve["drawdown"], "drawdown")
+    return curve, build_summary(curve, initial_equity)
+
+
+def period_row(frame: pd.DataFrame) -> dict[str, Any]:
+    validate_frame(frame)
+    prepared = frame.copy()
+    prepared["signal_date"] = parse_dates(prepared["signal_date"])
+    prepared["return"] = pd.to_numeric(prepared["return"], errors="coerce")
+    if prepared["signal_date"].isna().any():
+        raise ValueError("signal_date must be parseable")
+    complete = prepared[is_complete_trade(prepared)]
+    if complete.empty:
+        raise ValueError("backtest period has no complete trades")
+    if (
+        complete["return"].isna().any()
+        or complete["return"].isin([float("inf"), float("-inf")]).any()
+    ):
+        raise ValueError("complete trade return must be finite")
+    signal_dates = complete["signal_date"].dt.date.astype(str).unique()
+    if len(signal_dates) != 1:
+        raise ValueError("each backtest file must contain exactly one signal_date")
+    incomplete = int(len(prepared) - len(complete))
+    mean_return = require_finite_number(complete["return"].mean(), "mean-return")
+    return {
+        "signal_date": signal_dates[0],
+        "positions": int(len(complete)),
+        "mean_return": mean_return,
+        "incomplete_trades": incomplete,
+        "weighting": "equal_weight_completed_trades",
+        "claim_boundary": CLAIM_BOUNDARY,
+    }
+
+
+def validate_frame(frame: pd.DataFrame) -> None:
+    missing = [column for column in REQUIRED_COLUMNS if column not in frame]
+    if missing:
+        raise ValueError(f"backtest missing required columns: {', '.join(missing)}")
+    if frame.empty:
+        raise ValueError("backtest data is empty")
+
+
+def is_complete_trade(frame: pd.DataFrame) -> pd.Series:
+    missing = missing_data_mask(frame["missing_data"])
+    return (frame["status"].astype(str) == "complete") & (~missing)
+
+
+def missing_data_mask(values: Any) -> Any:
+    numeric = pd.to_numeric(values, errors="coerce")
+    text = values.astype(str).str.strip().str.lower()
+    return numeric.eq(1) | text.isin(["true", "1"])
+
+
+def build_summary(curve: pd.DataFrame, initial_equity: float) -> dict[str, Any]:
+    final_equity = require_finite_number(curve["equity"].iloc[-1], "final-equity")
+    trough_index = int(curve["drawdown"].idxmin())
+    trough_date = str(curve.loc[trough_index, "signal_date"])
+    if float(curve.loc[trough_index, "drawdown"]) == 0:
+        peak_date = "START"
+    else:
+        peak_date = peak_date_for_drawdown(curve, trough_index, initial_equity)
+    total_return = require_finite_number(
+        final_equity / float(initial_equity) - 1, "total-return"
+    )
+    max_drawdown = require_finite_number(curve["drawdown"].min(), "max-drawdown")
+    return {
+        "periods": int(len(curve)),
+        "positions": int(curve["positions"].sum()),
+        "incomplete_trades": int(curve["incomplete_trades"].sum()),
+        "initial_equity": float(initial_equity),
+        "final_equity": final_equity,
+        "total_return": total_return,
+        "max_drawdown": max_drawdown,
+        "max_drawdown_peak_date": peak_date,
+        "max_drawdown_trough_date": trough_date,
+    }
+
+
+def peak_date_for_drawdown(
+    curve: pd.DataFrame,
+    trough_index: int,
+    initial_equity: float,
+) -> str:
+    peak_value = float(curve.loc[trough_index, "running_peak"])
+    if peak_value == float(initial_equity):
+        return "START"
+    peak_rows = curve.loc[:trough_index]
+    matching = peak_rows[peak_rows["equity"] == peak_value]
+    if matching.empty:
+        return "START"
+    return str(matching.iloc[-1]["signal_date"])
+
+
+def write_output(frame: pd.DataFrame, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(path, index=False)
+
+
+def require_finite_values(values: Any, name: str) -> None:
+    for value in values:
+        numeric = float(value)
+        if not math.isfinite(numeric):
+            raise ValueError(f"{name} must be finite")
+
+
+def print_summary(summary: dict[str, Any], output: str, prefix: str = "OK") -> None:
+    print(
+        f"{prefix}: periods={summary['periods']} "
+        f"positions={summary['positions']} "
+        f"incomplete_trades={summary['incomplete_trades']} "
+        f"initial_equity={summary['initial_equity']} "
+        f"final_equity={summary['final_equity']} "
+        f"total_return={summary['total_return']} "
+        f"max_drawdown={summary['max_drawdown']} "
+        f"max_drawdown_peak_date={summary['max_drawdown_peak_date']} "
+        f"max_drawdown_trough_date={summary['max_drawdown_trough_date']} "
+        "complete_trades_only=true "
+        "final_equity_excludes_incomplete=true "
+        f"claim_boundary={CLAIM_BOUNDARY} "
+        f"output={output}"
+    )
+    print(
+        "INFO: portfolio_model=equal_weight_completed_trades "
+        f"claim_boundary={CLAIM_BOUNDARY}"
+    )
+
+
+def print_incomplete_warning(summary: dict[str, Any], fail_on_incomplete: bool) -> None:
+    if fail_on_incomplete or not summary["incomplete_trades"]:
+        return
+    print(
+        "WARNING: incomplete_trades_excluded="
+        f"{summary['incomplete_trades']} use --fail-on-incomplete for strict gates",
+        file=sys.stderr,
+    )
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

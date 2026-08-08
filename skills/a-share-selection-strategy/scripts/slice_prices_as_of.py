@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+"""Slice local OHLCV rows to an as-of date to prevent future leakage."""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+from lib.gates.a_share_selection_output_safety import (
+    prepare_output_paths,
+    remove_output_files,
+)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Slice local OHLCV data by date.")
+    parser.add_argument("--input", required=True, help="Path to CSV or Parquet file.")
+    parser.add_argument(
+        "--output",
+        required=True,
+        help="Path to output CSV file; must differ from --input.",
+    )
+    parser.add_argument(
+        "--as-of-date",
+        required=True,
+        help="Inclusive YYYY-MM-DD cutoff date; not proof that this date exists as a signal day.",
+    )
+    args = parser.parse_args(argv)
+    input_path = Path(args.input)
+    output_path = Path(args.output)
+    output_prepared = False
+    try:
+        prepare_output_paths([output_path], [input_path])
+        output_prepared = True
+        ensure_runtime_dependencies()
+        sliced = slice_prices(read_table(input_path), as_of_date=args.as_of_date)
+        write_output(sliced, output_path)
+    except (FileNotFoundError, ValueError) as exc:
+        if output_prepared:
+            remove_output_files([output_path])
+        print(
+            "ERROR: code=bad_input "
+            f"input={input_path.name} output_written=false message={exc}",
+            file=sys.stderr,
+        )
+        return 2
+    except Exception as exc:  # noqa: BLE001
+        if output_prepared:
+            remove_output_files([output_path])
+        print(
+            "ERROR: code=runtime_error "
+            f"input={input_path.name} output_written=false message={exc}",
+            file=sys.stderr,
+        )
+        return 2
+    print_summary(sliced, args.as_of_date, args.output)
+    return 0
+
+
+def ensure_runtime_dependencies() -> None:
+    if "pd" in globals():
+        return
+    import pandas as pandas_module
+    import lib.selection_core.a_share_selection_data as data_module
+    import lib.a_share_selection_validation as validation_module
+
+    globals().update(
+        {
+            "pd": pandas_module,
+            "parse_dates": data_module.parse_dates,
+            "read_table": data_module.read_table,
+            "validate_frame": validation_module.validate_frame,
+        }
+    )
+
+
+def slice_prices(frame: pd.DataFrame, *, as_of_date: str) -> pd.DataFrame:
+    ensure_runtime_dependencies()
+    errors = validate_frame(frame, min_history_rows=0)
+    if errors:
+        raise ValueError("; ".join(errors))
+    cutoff = parse_cutoff(as_of_date)
+    result = frame.copy()
+    result["symbol"] = result["symbol"].astype(str)
+    result["_parsed_date"] = parse_dates(result["date"])
+    result = result.dropna(subset=["_parsed_date"])
+    result = result[result["_parsed_date"] <= cutoff]
+    if result.empty:
+        raise ValueError(f"no rows on or before as-of-date {as_of_date}")
+    result = result.sort_values(["symbol", "_parsed_date"]).drop(
+        columns=["_parsed_date"]
+    )
+    annotate_as_of_metadata(result, as_of_date)
+    return result.reset_index(drop=True)
+
+
+def parse_cutoff(value: str) -> pd.Timestamp:
+    ensure_runtime_dependencies()
+    parsed = pd.to_datetime(value, errors="coerce")
+    if pd.isna(parsed):
+        raise ValueError("as-of-date must be parseable")
+    return parsed
+
+
+def write_output(frame: pd.DataFrame, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(path, index=False)
+
+
+def annotate_as_of_metadata(frame: pd.DataFrame, as_of_date: str) -> None:
+    dates = parse_dates(frame["date"])
+    cutoff = parse_cutoff(as_of_date).normalize()
+    actual_date = dates.max().date().isoformat()
+    observed = bool((dates.dt.normalize() == cutoff).any())
+    frame["requested_as_of_date"] = as_of_date
+    frame["actual_data_date"] = actual_date
+    frame["as_of_date_observed"] = observed
+
+
+def print_summary(frame: pd.DataFrame, as_of_date: str, output: str) -> None:
+    ensure_runtime_dependencies()
+    dates = parse_dates(frame["date"])
+    cutoff = parse_cutoff(as_of_date).normalize()
+    observed = bool((dates.dt.normalize() == cutoff).any())
+    print(
+        f"OK: rows={len(frame)} symbols={frame['symbol'].nunique()} "
+        f"date_min={dates.min().date()} date_max={dates.max().date()} "
+        f"as_of_date={as_of_date} actual_data_date={dates.max().date()} "
+        f"as_of_date_observed={str(observed).lower()} "
+        f"claim_boundary=as_of_cutoff_not_signal_day output={output}"
+    )
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
