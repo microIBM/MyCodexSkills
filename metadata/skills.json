@@ -309,12 +309,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "3b071bddf6a8ecee8e2a608d28f8b7f2140cbd914c9c08b58119943e9a760311",
-      "currentRepoHash": "3b071bddf6a8ecee8e2a608d28f8b7f2140cbd914c9c08b58119943e9a760311",
-      "currentLocalHash": "3b071bddf6a8ecee8e2a608d28f8b7f2140cbd914c9c08b58119943e9a760311",
+      "lastSyncedHash": "4316bfe5cbb41404f004996ff668edbd56f1116a3bba0c0a51b6c7ac0e498167",
+      "currentRepoHash": "4316bfe5cbb41404f004996ff668edbd56f1116a3bba0c0a51b6c7ac0e498167",
+      "currentLocalHash": "4316bfe5cbb41404f004996ff668edbd56f1116a3bba0c0a51b6c7ac0e498167",
       "lastUsedAt": null,
-      "createdAt": "2026-07-19T16:05:02.105Z",
-      "updatedAt": "2026-07-19T16:05:02.105Z"
+      "createdAt": "2026-08-08T04:44:46.437Z",
+      "updatedAt": "2026-08-08T04:44:46.437Z"
     },
     {
       "id": "code-review",

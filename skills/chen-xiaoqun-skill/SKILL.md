@@ -243,6 +243,7 @@ description: |
 
 ---
 
+
 ## 决策启发式
 
 | # | 规则 | 应用场景 | 案例 |
@@ -387,8 +388,6 @@ description: |
 ---
 
 
-
-
 <!-- FULL_OCR_ENHANCEMENT_START -->
 ## 全文OCR二次蒸馏
 
@@ -416,8 +415,6 @@ description: |
 - OCR补强提升的是心法和问题路由，不等同于本人授权语录。
 - 个股、板块、行情问题仍必须先查最新事实；历史心法只负责分析框架。
 <!-- FULL_OCR_ENHANCEMENT_END -->
-
-
 
 
 ## 诚实边界
