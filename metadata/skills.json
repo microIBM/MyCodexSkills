@@ -324,12 +324,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "4316bfe5cbb41404f004996ff668edbd56f1116a3bba0c0a51b6c7ac0e498167",
-      "currentRepoHash": "4316bfe5cbb41404f004996ff668edbd56f1116a3bba0c0a51b6c7ac0e498167",
-      "currentLocalHash": "4316bfe5cbb41404f004996ff668edbd56f1116a3bba0c0a51b6c7ac0e498167",
+      "lastSyncedHash": "bb7471b37ae76a31c04ab41e92777efa9cc5c5f037cea1ff42d4930d8d2b8f4d",
+      "currentRepoHash": "bb7471b37ae76a31c04ab41e92777efa9cc5c5f037cea1ff42d4930d8d2b8f4d",
+      "currentLocalHash": "bb7471b37ae76a31c04ab41e92777efa9cc5c5f037cea1ff42d4930d8d2b8f4d",
       "lastUsedAt": null,
-      "createdAt": "2026-08-08T04:44:46.437Z",
-      "updatedAt": "2026-08-08T04:44:46.437Z"
+      "createdAt": "2026-09-24T14:27:20.047Z",
+      "updatedAt": "2026-09-24T14:27:20.047Z"
     },
     {
       "id": "code-review",
@@ -1404,12 +1404,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "4e31cc76a230d6fd7074d9b0ed226b41208236ccf28daa069047c0e7fb44164f",
-      "currentRepoHash": "4e31cc76a230d6fd7074d9b0ed226b41208236ccf28daa069047c0e7fb44164f",
-      "currentLocalHash": "4e31cc76a230d6fd7074d9b0ed226b41208236ccf28daa069047c0e7fb44164f",
+      "lastSyncedHash": "527bbe7ff07d0aa55c5c36f2520d39c5678761765f0ef727c6520e62218674cd",
+      "currentRepoHash": "527bbe7ff07d0aa55c5c36f2520d39c5678761765f0ef727c6520e62218674cd",
+      "currentLocalHash": "527bbe7ff07d0aa55c5c36f2520d39c5678761765f0ef727c6520e62218674cd",
       "lastUsedAt": null,
-      "createdAt": "2026-07-19T16:05:02.421Z",
-      "updatedAt": "2026-07-19T16:05:02.421Z"
+      "createdAt": "2026-09-24T14:27:20.066Z",
+      "updatedAt": "2026-09-24T14:27:20.066Z"
     },
     {
       "id": "youzi-duli-fengge",
@@ -1419,12 +1419,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "92472ecc2ae4d4b0717807bc3f199cb9473621f0bbac05e530a536177b7fbb94",
-      "currentRepoHash": "92472ecc2ae4d4b0717807bc3f199cb9473621f0bbac05e530a536177b7fbb94",
-      "currentLocalHash": "92472ecc2ae4d4b0717807bc3f199cb9473621f0bbac05e530a536177b7fbb94",
+      "lastSyncedHash": "c331fd6f308c6de88f11ed2b448b34c6ac4b6fd33389a56b9ca82b23e63d759b",
+      "currentRepoHash": "c331fd6f308c6de88f11ed2b448b34c6ac4b6fd33389a56b9ca82b23e63d759b",
+      "currentLocalHash": "c331fd6f308c6de88f11ed2b448b34c6ac4b6fd33389a56b9ca82b23e63d759b",
       "lastUsedAt": null,
-      "createdAt": "2026-07-19T16:05:02.497Z",
-      "updatedAt": "2026-07-19T16:05:02.497Z"
+      "createdAt": "2026-09-24T14:27:20.102Z",
+      "updatedAt": "2026-09-24T14:27:20.102Z"
     },
     {
       "id": "youzi-fangshou-fuli",
@@ -1434,12 +1434,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "4b4de1c2398cacedc2e9624377dd7a1f83b4ef1326c4e7f5173037ae096b6c64",
-      "currentRepoHash": "4b4de1c2398cacedc2e9624377dd7a1f83b4ef1326c4e7f5173037ae096b6c64",
-      "currentLocalHash": "4b4de1c2398cacedc2e9624377dd7a1f83b4ef1326c4e7f5173037ae096b6c64",
+      "lastSyncedHash": "289a6cdaec72b51269ff41c500141874f5fe9e754310717c004a0af7187d7c4a",
+      "currentRepoHash": "289a6cdaec72b51269ff41c500141874f5fe9e754310717c004a0af7187d7c4a",
+      "currentLocalHash": "289a6cdaec72b51269ff41c500141874f5fe9e754310717c004a0af7187d7c4a",
       "lastUsedAt": null,
-      "createdAt": "2026-07-19T16:05:02.519Z",
-      "updatedAt": "2026-07-19T16:05:02.519Z"
+      "createdAt": "2026-09-24T14:27:20.114Z",
+      "updatedAt": "2026-09-24T14:27:20.114Z"
     },
     {
       "id": "youzi-longtou-zhanfa",
@@ -1449,12 +1449,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "8369e2de6e60c9b93fac7c53967eada050992648759d4e424c84932c6222121b",
-      "currentRepoHash": "8369e2de6e60c9b93fac7c53967eada050992648759d4e424c84932c6222121b",
-      "currentLocalHash": "8369e2de6e60c9b93fac7c53967eada050992648759d4e424c84932c6222121b",
+      "lastSyncedHash": "44ebf268be7e50e3a094b06b28fa09377c19bbe751d9e0313b9d231af102b6cf",
+      "currentRepoHash": "44ebf268be7e50e3a094b06b28fa09377c19bbe751d9e0313b9d231af102b6cf",
+      "currentLocalHash": "44ebf268be7e50e3a094b06b28fa09377c19bbe751d9e0313b9d231af102b6cf",
       "lastUsedAt": null,
-      "createdAt": "2026-07-19T16:05:02.560Z",
-      "updatedAt": "2026-07-19T16:05:02.560Z"
+      "createdAt": "2026-09-24T14:27:20.138Z",
+      "updatedAt": "2026-09-24T14:27:20.138Z"
     },
     {
       "id": "youzi-qingxu-liu",
@@ -1464,12 +1464,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "f9d7e3cb529b7887dc7121498bdfb43915cc34d471db9b2188767d103ab3086a",
-      "currentRepoHash": "f9d7e3cb529b7887dc7121498bdfb43915cc34d471db9b2188767d103ab3086a",
-      "currentLocalHash": "f9d7e3cb529b7887dc7121498bdfb43915cc34d471db9b2188767d103ab3086a",
+      "lastSyncedHash": "ccca79d95af2909664f1dad08383237d430ade1586c07f43be918452852ee502",
+      "currentRepoHash": "ccca79d95af2909664f1dad08383237d430ade1586c07f43be918452852ee502",
+      "currentLocalHash": "ccca79d95af2909664f1dad08383237d430ade1586c07f43be918452852ee502",
       "lastUsedAt": null,
-      "createdAt": "2026-07-19T16:05:02.600Z",
-      "updatedAt": "2026-07-19T16:05:02.600Z"
+      "createdAt": "2026-09-24T14:27:20.153Z",
+      "updatedAt": "2026-09-24T14:27:20.153Z"
     },
     {
       "id": "youzi-qushi-jiedian",
@@ -1479,12 +1479,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "0436e90c9b9fbf63dc430b50159c04d07597d441bd3a9253ddfb969787a195c3",
-      "currentRepoHash": "0436e90c9b9fbf63dc430b50159c04d07597d441bd3a9253ddfb969787a195c3",
-      "currentLocalHash": "0436e90c9b9fbf63dc430b50159c04d07597d441bd3a9253ddfb969787a195c3",
+      "lastSyncedHash": "05c0faa434fc8026556e7018f6ac80d2357736146d7c2225bf189ba85f34ff64",
+      "currentRepoHash": "05c0faa434fc8026556e7018f6ac80d2357736146d7c2225bf189ba85f34ff64",
+      "currentLocalHash": "05c0faa434fc8026556e7018f6ac80d2357736146d7c2225bf189ba85f34ff64",
       "lastUsedAt": null,
-      "createdAt": "2026-07-19T16:05:02.638Z",
-      "updatedAt": "2026-07-19T16:05:02.638Z"
+      "createdAt": "2026-09-24T14:27:20.171Z",
+      "updatedAt": "2026-09-24T14:27:20.171Z"
     },
     {
       "id": "youzi-ruozhuanqiang",
@@ -1509,12 +1509,12 @@
       "localSource": "codex",
       "installed": true,
       "syncState": "clean",
-      "lastSyncedHash": "a0636305e94486d4c8b4879260694f769993f80a13c7559e79f0c5d878cb80e3",
-      "currentRepoHash": "a0636305e94486d4c8b4879260694f769993f80a13c7559e79f0c5d878cb80e3",
-      "currentLocalHash": "a0636305e94486d4c8b4879260694f769993f80a13c7559e79f0c5d878cb80e3",
+      "lastSyncedHash": "4bd18064ec6ccb934e769c1e9777701b0288b8b3f4e91b5d050d38525a85ae25",
+      "currentRepoHash": "4bd18064ec6ccb934e769c1e9777701b0288b8b3f4e91b5d050d38525a85ae25",
+      "currentLocalHash": "4bd18064ec6ccb934e769c1e9777701b0288b8b3f4e91b5d050d38525a85ae25",
       "lastUsedAt": null,
-      "createdAt": "2026-07-19T16:05:02.791Z",
-      "updatedAt": "2026-07-19T16:05:02.791Z"
+      "createdAt": "2026-09-24T14:27:20.175Z",
+      "updatedAt": "2026-09-24T14:27:20.175Z"
     },
     {
       "id": "youzi-trading-skill",

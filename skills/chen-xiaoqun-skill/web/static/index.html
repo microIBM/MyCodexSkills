@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陈小群 · 龙头语音室</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+
+<div class="app">
+  <header class="topbar">
+    <div class="mark">CHEN&nbsp;XIAOQUN <em>龙头语音室</em></div>
+    <div class="topright">
+      <div class="modeswitch" id="modeSwitch" title="基础：轻量人设，响应快省钱；完整：整份 SKILL.md 思维框架，更懂行但首字稍慢">
+        <button data-mode="base" class="on">基础</button>
+        <button data-mode="full">完整</button>
+      </div>
+      <div id="status" class="status idle"><i class="dot"></i><span>OFFLINE</span></div>
+    </div>
+  </header>
+
+  <div class="hero"></div>
+
+  <div class="caption">
+    <span id="quote">只做龙头不做杂毛</span>
+  </div>
+
+  <main id="chat"></main>
+
+  <footer class="dock">
+    <div class="inputbar">
+      <input id="textInput" type="text" placeholder="打字，或按下麦克风开口问群总…" autocomplete="off">
+      <button id="sendBtn" title="发送">发送</button>
+      <button id="stopBtn" title="打断当前回答">闭嘴</button>
+    </div>
+
+    <div class="callwrap">
+      <button id="micBtn" class="callbtn" title="连续语音识别开关">
+        <span class="ripple r1"></span>
+        <span class="ripple r2"></span>
+        <svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V22h2v-3.08A7 7 0 0 0 19 12h-2Z"/></svg>
+      </button>
+      <div id="callHint" class="callhint">按下开始语音对话</div>
+    </div>
+
+    <label class="headset">
+      <input type="checkbox" id="bargeIn"> 耳机模式（播放时也听麦克风，可语音打断）
+    </label>
+    <div id="asrHint" class="hint"></div>
+  </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

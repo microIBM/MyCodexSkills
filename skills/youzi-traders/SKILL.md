@@ -32,7 +32,7 @@ triggers:
 | 打板与高频 | 打板、首板、高频、轮动、涨停 | `daban-gaopin/` |
 | 趋势与节点 | 趋势、节点、半路、分时 | `qushi-jiedian/` |
 | 防守与复利 | 防守、止损、回撤、复利 | `fangshou-fuli/` |
-| 独立风格 | 复盘、实战、案例、心法 | `du立-fengge/` |
+| 独立风格 | 复盘、实战、案例、心法 | `youzi-duli-fengge/` |
 
 **Step 2: 加载具体人物**
 进入对应子目录，加载具体人物的 `SKILL.md`。
@@ -70,7 +70,7 @@ youzi-traders/
 ├── fangshou-fuli/              # 防守与复利
 │   ├── 18-longfeihu/           # 龙飞虎
 │   └── 26-shanxingzhianzhu/    # 善行天助
-└── du立-fengge/                # 独立风格
+└── youzi-duli-fengge/          # 独立风格
     ├── 01-shuidaogegu/         # 水刀割股
     ├── 03-92biji/              # 92科比
     ├── 09-zhumingcike/         # 著名刺客
